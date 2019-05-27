@@ -1,0 +1,1 @@
+self.addEventListener("install",function(e){e.waitUntil(caches.open("app-cache").then(function(e){return e.addAll(["index.html","manifest.json","css/style.css","js/script.js"])}))}),self.addEventListener("fetch",function(e){e.respondWith(fetch(e.request).catch(function(){return caches.match(e.request)}))});
