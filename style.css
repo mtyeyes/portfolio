@@ -2,15 +2,11 @@
     background-color: #282C34;
 }
 
-/* .examples__wrapper {
-    width: 1200px;
-    margin: 0 auto;
-} */
-
 .examples__heading {
     padding-top: 250px;
     color: #7DA5BF;
     text-align: center;
+    text-indent: 30px;
 }
 
 .examples__list {
@@ -18,7 +14,7 @@
     display: flex;
     flex-direction: column;
     list-style: none;
-    width: 400px;
+    max-width: 400px;
 }
 
 .examples__item {
