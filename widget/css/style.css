@@ -26,9 +26,18 @@
   color: #f1d02f;
 }
 
+.widget__flex-wrap {
+  display: flex;
+  flex-grow: 0;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
 .widget__user-name {
+  width: 189px;
   display: block;
-  padding: 28px 0 0 15px;
+  padding: 0 0 0 15px;
+  margin-top: 28px;
   color: #2856a8;
   font-family: "ALSSchlangesans-Black", sans-serif;
   font-size: 18px;
@@ -38,13 +47,11 @@
 }
 
 .widget__discount {
-  position: absolute;
-  top: 61px;
-  right: 0;
+  order: 1;
   width: 94px;
-  padding: 7px 0 4px 0;
+  margin: 15px 0 0 0;
+  padding: 8px 0 5px 0;
   text-indent: 21px;
-  vertical-align: bottom;
   border-radius: 8px 0 0 8px;
   border: 1px dashed #2856a8;
   background-color: #2856a8;
@@ -57,6 +64,8 @@
 }
 
 .widget__advert {
+  order: 2;
+  margin: 3px 0 1px 0;
   padding: 5px 30px 0 18px;
   color: #484848;
   font-family: "Myriad Pro", sans-serif;
