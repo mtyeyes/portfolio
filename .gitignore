@@ -1,0 +1,8 @@
+.DS_Store
+.idea
+.vscode
+instruments/
+instruments/image-cropper/
+instruments/letter-spacing-css-converter/
+instruments/regex-creator/
+Thumbs.db
