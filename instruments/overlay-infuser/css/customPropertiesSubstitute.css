@@ -1,0 +1,56 @@
+.page {
+  background-color: #f8f8f8;
+}
+
+.description__container {
+  color: #2e2f3e;
+}
+
+.colored {
+  color: #007db5;
+}
+
+.download__btn {
+  background-position-x: 0;
+}
+
+.instruction__toggle-btn {
+  color: #e95420;
+  background-color: #f8f8f8;
+  border: 5px solid #eaeaea;
+}
+
+.instruction__toggle-btn::before,
+.instruction__toggle-btn::after {
+  background-position-x: 0;
+}
+
+.instruction__toggle-btn::before {
+  background-color: #ffffff;
+}
+
+.instruction__toggle-btn:hover,
+.instruction__toggle-btn:focus {
+  color: #2e2f3e;
+  border: 5px solid #e95420;
+}
+
+.instruction__container {
+  color: #007db5;
+  background-color: #ffffff;
+  border: 3px solid #eaeaea;
+}
+
+.instruction__mobile-warning {
+  color: #007db5;
+  background-color: #ffffff;
+  border: 3px solid #007db5;
+}
+
+.copy-script__container {
+  color: #2e2f3e;
+}
+
+.copy-script__btn {
+  background-position-x: 0;
+}

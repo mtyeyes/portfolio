@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>What Key Is This</title>
+  </head>
+  <body>
+    <div class="container">
+      <div><span>event.code</span><span>:</span><input disabled class="code-field"></input><button class="btn copy-code">to clipboard</button></div>
+      <div><span>event.keyCode</span><span>:</span><input disabled class="key-code-field"></input><button class="btn copy-key-code">to clipboard</button></div>
+      <div><span>event.key</span><span>:</span><input disabled class="key-field"></input><button class="btn copy-key">to clipboard</button></div>
+    </div>
+    <style type="text/css">
+      body {
+        background-color: #282c34;
+      }
+
+      .container {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 600px;
+        height: 130px;
+        margin: 300px auto 0;
+        font-size: 30px;
+        color: #98c379;
+      }
+
+      .btn {
+        margin-left: 20px;
+        background-color: transparent;
+        border: 3px solid #98c379;
+        border-radius: 25px;
+        font-size: 26px;
+        color: #98c379;
+      }
+
+      .btn:active {
+        color: #e06c75;
+        border-color: #e06c75;
+      }
+
+      span:first-child {
+        display: inline-block;
+        width: 185px;
+      }
+
+      span:nth-child(2) {
+        width: 10px;
+        margin: 0 20px;
+      }
+
+      input {
+        width: 185px;
+        background-color: #21252b;
+        border: 0;
+        border-radius: 25px;
+        font-size: 30px;
+        color: #e06c75;
+        text-align: center;
+      }
+    </style>
+    <script>
+      let fieldForCode = document.querySelector('.code-field');
+      let fieldForKeyCode = document.querySelector('.key-code-field');
+      let fieldForKey = document.querySelector('.key-field');
+      let btnCopyCode = document.querySelector('.copy-code');
+      let btnCopyKeyCode = document.querySelector('.copy-key-code');
+      let btnCopyKey = document.querySelector('.copy-key');
+      
+      function textToClipboard(text) {
+        if (!navigator.clipboard) {
+          fallbackForOlderBrowsers(text);
+          return;
+        };
+        navigator.clipboard.writeText(text);
+      };
+      
+      function fallbackForOlderBrowsers(text) {
+        var textArea = document.createElement("textarea");
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+      };
+      
+      document.addEventListener('keydown', function(event) {
+        event.preventDefault();
+        fieldForCode.value = event.code;
+        fieldForKeyCode.value = event.keyCode;
+        fieldForKey.value = event.key;
+      });
+      
+      btnCopyCode.addEventListener('click', function() {
+        textToClipboard(fieldForCode.value);
+      });
+      
+      btnCopyKeyCode.addEventListener('click', function(){
+        textToClipboard(fieldForKeyCode.value);
+      });
+
+      btnCopyKey.addEventListener('click', function(){
+        textToClipboard(fieldForKey.value);
+      });
+    </script>
+  </body>
+</html>
