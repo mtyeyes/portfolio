@@ -22,7 +22,7 @@ btnToggleState = (state, phrase) => {
 };
 
 getScript = () => {
-  fetch('/js/infuser.js')
+  fetch('js/infuser.js')
   .then(
     function(response) {
       if (response.status !== 200) {
