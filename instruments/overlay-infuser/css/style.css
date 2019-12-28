@@ -135,7 +135,6 @@
 }
 
 .instruction__container {
-  /* display: none; */
   max-height: 0;
   width: 85%;
   padding-left: 30px;

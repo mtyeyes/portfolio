@@ -1,0 +1,30 @@
+{
+  "darkInk": {
+    "title": "Dark Ink",
+    "supportedBrowsers": ["chrome", "firefox", "safari", "ie"],
+    "description": "Адапитивный pixel-perfect, JS, БЭМ",
+    "skills": ["JavaScript", "Pixel Perfect", "BEM", "Gulp", "Parcel"],
+    "link": "https://mtyeyes.github.io/dark-ink/"
+  },
+  "screenPalette": {
+    "title": "Screen Palette",
+    "supportedBrowsers": ["chrome", "firefox", "safari"],
+    "description": "PWA ночник. JS, custom properties, LocalStorage",
+    "skills": ["JavaScript", "PWA", "Custom properties", "Gulp"],
+    "link": "https://mtyeyes.github.io/palette/"
+  },
+  "overlayInfuser": {
+    "title": "Overlay Infuser",
+    "supportedBrowsers": ["chrome", "firefox", "safari", "ie"],
+    "description": "Скрипт для накладывания макета на верстку",
+    "skills": ["JavaScript"],
+    "link": "https://mtyeyes.github.io/instruments/overlay-infuser"
+  },
+  "sedona": {
+    "title": "Sedona",
+    "supportedBrowsers": ["chrome", "firefox", "safari", "ie"],
+    "description": "Отзывчивый pixel-perfect, БЭМ",
+    "skills": ["Pixel Perfect", "Gulp", "BEM"],
+    "link": "https://mtyeyes.github.io/sedona/"
+  }
+}
