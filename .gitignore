@@ -1,7 +1,6 @@
 .DS_Store
 .idea
 .vscode
-instruments/index.html
 instruments/image-cropper/
 instruments/letter-spacing-css-converter/
 instruments/regex-creator/
