@@ -525,7 +525,7 @@
   display: flex;
 }
 
-.preferences__theme-switch {
+.preferences__site-preferences {
   border: none;
   margin: 10vh 0 auto;
 }
@@ -537,20 +537,22 @@
 }
 
 .skills__legend {
+  margin: 0 auto;
   text-align: center;
 }
 
+.site-preferences__list,
 .skills__list {
   list-style: none;
   padding: 0;
 }
 
-.theme-switch__label,
+.site-preferences__label,
 .skills__skill-container {
   margin: 10px 2px;
 }
 
-.theme-switch__label,
+.site-preferences__label,
 .skills__skill-label {
   display: block;
   position: relative;
@@ -560,16 +562,16 @@
   touch-action: manipulation;
 }
 
-.theme-switch__label:focus,
-.theme-switch__label:hover,
-.theme-switch__checkbox:focus + .theme-switch__label,
+.site-preferences__label:focus,
+.site-preferences__label:hover,
+.site-preferences__checkbox:focus + .site-preferences__label,
 .skills__skill-checkbox:focus + .skills__skill-label,
 .skills__skill-label:focus,
 .skills__skill-label:hover {
   color: var(--main-color);
 }
 
-.theme-switch__checkbox + .theme-switch__label::before,
+.site-preferences__checkbox + .site-preferences__label::before,
 .skills__skill-checkbox + .skills__skill-label::before {
   content: "";
   position: absolute;
@@ -584,7 +586,7 @@
   border: 2px solid var(--border-color);
 }
 
-.theme-switch__checkbox + .theme-switch__label::after,
+.site-preferences__checkbox + .site-preferences__label::after,
 .skills__skill-checkbox + .skills__skill-label::after {
   content: "";
   position: absolute;
@@ -597,12 +599,12 @@
   transition: 150ms;
 }
 
-.theme-switch__checkbox:checked + .theme-switch__label::before,
+.site-preferences__checkbox:checked + .site-preferences__label::before,
 .skills__skill-checkbox:checked + .skills__skill-label::before {
   background-color: var(--background-darker-color);
 }
 
-.theme-switch__checkbox:checked + .theme-switch__label::after,
+.site-preferences__checkbox:checked + .site-preferences__label::after,
 .skills__skill-checkbox:checked + .skills__skill-label::after {
   transform: translateX(19px);
 }
@@ -678,15 +680,11 @@
     font-size: 1.5rem;
   }
 
-  .preferences__theme-switch,
+  .preferences__site-preferences,
   .preferences__skills {
     width: 70%;
     margin-left: auto;
     margin-right: auto;
-  }
-
-  .skills__legend {
-    margin: 0 auto;
   }
 
   .portfolio__projects-list {

@@ -73,7 +73,7 @@ const common = {
       if ('HTMLPortalElement' in window) {
         this.thumbnail = common.createNewElement('portal', ['project__thumbnail', 'project__thumbnail--portal'], {'src': obj['link']});
       } else {
-        this.thumbnail = common.createNewElement('img', ['project__thumbnail', 'project__thumbnail--img'], {'src': `resources/${obj['title']}.jpg`});
+        this.thumbnail = common.createNewElement('img', ['project__thumbnail', 'project__thumbnail--img'], {'src': `resources/${obj['title']}.jpg`, 'alt': `${obj['title']} thumbnail`});
       }
       this.link = function () {
         const link = common.createNewElement('a', ['project__link', 'mouse-stalker-hoverable'], {'href': obj['link'], 'target': '_blank', 'aria-label': obj['title']});
@@ -98,7 +98,7 @@ const common = {
         });
         return list;
       };
-      this.description = common.createNewElement('p', ['project__description'], '', obj['description']);
+      this.description = common.createNewElement('p', ['project__description'], {'data-lang-ru': obj['description'], 'data-lang-en': obj['data-lang-en']}, obj['description']);
       this.descriptionWrapper = common.createNewElement('div', ['project__description-wrapper']);
       this.cardContainer = common.createNewElement('li', ['project__card']);
       this.descriptionWrapper.append(this.description);
@@ -177,7 +177,7 @@ const common = {
 //-------------
 
 (function () {
-  const themeSwitcher = document.querySelector('.theme-switch__checkbox');
+  const themeSwitcher = document.querySelector('.site-preferences__checkbox--theme-switch');
   const mapThemesStyles = {
     ' light': {
       '--theme': ' light',
@@ -387,7 +387,6 @@ const common = {
 //-------------------------
 
 (function () {
-
   class UnfoldableLinkDescription {
     constructor(element) {
       this.container = element;
@@ -436,4 +435,49 @@ const common = {
   };
 
   document.querySelectorAll('.contacts__contact').forEach(element => new UnfoldableLinkDescription(element));
+})();
+
+//change language
+//---------------
+
+(function () {
+let multilanguageContainers = document.querySelectorAll('[data-lang-ru]');
+const changeLanguageCheckbox = document.querySelector('.site-preferences__checkbox--language-change');
+const title = {
+  'Ru': 'Портфолио',
+  'En': 'Portfolio'
+};
+const changeLanguage = (language) => {
+  multilanguageContainers.forEach(element => element.textContent = element.dataset[(`lang${language}`)]);
+  document.title = title[language];
+  updateCheckbox(language);
+  localStorage.setItem('language', language);
+};
+const applyLanguageToNewElements = (event) => {
+  const newMultilanguageContainers = event.target.querySelectorAll('[data-lang-ru]');
+  if (newMultilanguageContainers) {
+    newMultilanguageContainers.forEach(element => element.textContent = element.dataset[(`lang${localStorage.getItem('language')}`)]);
+    multilanguageContainers = [...multilanguageContainers, ...newMultilanguageContainers];
+  }
+};
+const updateCheckbox = (language) => {
+  (language === 'En') ? changeLanguageCheckbox.checked = true : changeLanguageCheckbox.checked = false;
+}
+
+
+if (localStorage.getItem('language')) {
+  changeLanguage(localStorage.getItem('language'));
+} else if (navigator.languages.includes('ru')) {
+  changeLanguage('Ru');
+} else {
+  changeLanguage('En');
+};
+
+changeLanguageCheckbox.addEventListener('change', function (event) {
+  (changeLanguageCheckbox.checked) ? changeLanguage('En') : changeLanguage('Ru');
+});
+
+document.addEventListener('elementinserted', function (event) {
+  applyLanguageToNewElements(event);
+});
 })();

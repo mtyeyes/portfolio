@@ -3,9 +3,10 @@
 
 <head>
   <meta charset="utf-8" />
-  <title>Партфолио</title>
+  <title>Portfolio</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="format-detection" content="telephone=no" />
+  <meta name="description" content="Junior frontend developer" />
   <style>
     :root {
       --theme: light;
@@ -264,7 +265,7 @@
 
   <header class="about-me modal modal__container">
     <button class="about-me__btn modal__toggle btn mouse-stalker-hoverable">
-      <span class="visually-hidden">Обо мне</span>
+      <span class="visually-hidden" data-lang-ru="Обо мне" data-lang-en="About me">Обо мне</span>
       <span class="btn-flip__wrapper btn-flip__wrapper--face">
         <svg class="btn__icon">
           <use xlink:href="#icon-about"></use>
@@ -277,15 +278,15 @@
       </span>
     </button>
     <div class="about-me__wrapper">
-      <h1 class="about-me__greeting">Привет, я Стас</h1>
-      <p class="about-me__description">Начинающий frontend-разработчик</p>
+      <h1 class="about-me__greeting" data-lang-ru="Привет, я Стас" data-lang-en="Hello, my name is Stan">Привет, я Стас</h1>
+      <p class="about-me__description" data-lang-ru="Начинающий frontend-разработчик" data-lang-en="I'm a beginner frontend developer">Начинающий frontend-разработчик</p>
     </div>
     <figure class="about-me__contacts contacts">
-      <figcaption class="contacts__caption">Контакты:</figcaption>
+      <figcaption class="contacts__caption" data-lang-ru="Контакты:" data-lang-en="Contact me:">Контакты:</figcaption>
       <ul class="contacts__list">
         <li class="contacts__contact" data-unfold-content="mtyeyes@disroot.org">
-          <a class="contacts__link mouse-stalker-hoverable" href="mailto:mtyeyes@disroot.org" data-stalker-animated="true" data-salker-target-inside="contacts__icon">
-            <span class="visually-hidden">Почта</span>
+          <a class="contacts__link mouse-stalker-hoverable" href="mailto:mtyeyes@disroot.org" target="_blank" data-stalker-animated="true" data-salker-target-inside="contacts__icon" rel="noopener">
+            <span class="visually-hidden" data-lang-ru="Почта" data-lang-en="Email">Почта</span>
             <svg class="contacts__icon contacts__icon--mail">
               <use xlink:href="#icon-mail"></use>
             </svg>
@@ -293,14 +294,14 @@
         </li>
         <li class="contacts__contact" data-unfold-content="+7(908)110-86-66">
           <a class="contacts__link mouse-stalker-hoverable" href="tel:+7-908-110-86-66" data-stalker-animated="true" data-salker-target-inside="contacts__icon">
-            <span class="visually-hidden">Контактный номер</span>
+            <span class="visually-hidden" data-lang-ru="Контактный номер" data-lang-en="Phone number">Контактный номер</span>
             <svg class="contacts__icon contacts__icon--phone">
               <use xlink:href="#icon-phone"></use>
             </svg>
           </a>
         </li>
         <li class="contacts__contact" data-unfold-content="github.com/mtyeyes">
-          <a class="contacts__link mouse-stalker-hoverable" href="https://github.com/mtyeyes" data-stalker-animated="true"  data-salker-target-inside="contacts__icon">
+          <a class="contacts__link mouse-stalker-hoverable" href="https://github.com/mtyeyes" target="_blank" data-stalker-animated="true"  data-salker-target-inside="contacts__icon" rel="noopener">
             <span class="visually-hidden">GitHub</span>
             <svg class="contacts__icon contacts__icon--github">
               <use xlink:href="#icon-github"></use>
@@ -308,7 +309,7 @@
           </a>
         </li>
         <li class="contacts__contact" data-unfold-content="LinkedIn">
-          <a class="contacts__link mouse-stalker-hoverable" href="LinkedIn" data-stalker-animated="true" data-salker-target-inside="contacts__icon">
+          <a class="contacts__link mouse-stalker-hoverable" href="LinkedIn" target="_blank" data-stalker-animated="true" data-salker-target-inside="contacts__icon" rel="noopener">
             <span class="visually-hidden">LinkedIn</span>
             <svg class="contacts__icon contacts__icon--linkedin">
               <use xlink:href="#icon-linkedin"></use>
@@ -324,11 +325,11 @@
       <div class="loader__circle"></div>
       <div class="loader__circle"></div>
       <div class="loader__circle"></div>
-      <span class="visually-hidden">Идет загрузка данных</span>
+      <span class="visually-hidden" data-lang-ru="Идет загрузка данных" data-lang-en="Loading">Идет загрузка данных</span>
     </div>
     <aside class="portfolio__preferences preferences modal modal__container">
       <button class="preferences__btn btn modal__toggle mouse-stalker-hoverable">
-        <span class="visually-hidden">Допольнительные настройки</span>
+        <span class="visually-hidden" data-lang-ru="Допольнительные настройки" data-lang-en="Preferences">Допольнительные настройки</span>
         <span class="btn-flip__wrapper btn-flip__wrapper--face">
           <svg class="btn__icon">
             <use xlink:href="#icon-preferences"></use>
@@ -341,13 +342,21 @@
         </span>
       </button>
       <div class="preferences__container">
-        <fieldset class="preferences__theme-switch theme-switch">
-          <legend class="theme-switch__legend visually-hidden">Выбор темы</legend>
-          <input class="theme-switch__checkbox visually-hidden" type="checkbox" name="theme-switch" id="theme-switcher" />
-          <label class="theme-switch__label mouse-stalker-hoverable" for="theme-switcher" data-stalker-animated="true" data-stalker-radius="10px">Включить темную тему</label>
+        <fieldset class="preferences__site-preferences site-preferences">
+          <legend class="site-preferences__legend visually-hidden" data-lang-ru="Настройки сайта" data-lang-en="Site preferences">Настройки сайта</legend>
+          <ul class="site-preferences__list">
+            <li class="site-preferences__item">
+              <input class="site-preferences__checkbox site-preferences__checkbox--theme-switch visually-hidden" type="checkbox" name="theme-switch" id="theme-switcher" />
+              <label class="site-preferences__label site-preferences__label--theme-switch mouse-stalker-hoverable" for="theme-switcher" data-stalker-animated="true" data-stalker-radius="10px" data-lang-ru="Включить темную тему" data-lang-en="Apply dark theme">Включить темную тему</label>
+            </li>
+            <li class="site-preferences__item">
+              <input class="site-preferences__checkbox site-preferences__checkbox--language-change visually-hidden" type="checkbox" name="language-change" id="language-changer" />
+              <label class="site-preferences__label site-preferences__label--language-change mouse-stalker-hoverable" for="language-changer" data-stalker-animated="true" data-stalker-radius="10px" data-lang-ru="Изменить язык" data-lang-en="Change language">Изменить язык</label>
+            </li>
+          </ul>
         </fieldset>
         <fieldset class="preferences__skills skills">
-          <legend class="skills__legend">Применяемые навыки:</legend>
+          <legend class="skills__legend" data-lang-ru="Применяемые навыки:" data-lang-en="Skills">Применяемые навыки:</legend>
         </fieldset>
       </div>
     </aside>
@@ -359,7 +368,7 @@
       "@type": "Person",
       "url": "http://mtyeyes.github.io",
       "name": "Стас Коновалов",
-      "email": "mailto:mtyeyes@mail.ru",
+      "email": "mailto:mtyeyes@disroot.org",
       "telephone": "+7(908)1108666"
     }
   </script>
