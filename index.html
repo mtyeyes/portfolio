@@ -57,7 +57,6 @@
       border: none;
       border-radius: 100%;
       background-color: transparent;
-      transition: 0;
       z-index: 50;
       touch-action: manipulation;
       cursor: pointer;
@@ -66,6 +65,7 @@
 
     .btn-flip__wrapper {
       position: absolute;
+      display: block;
       top: 0;
       left: 0;
       width: 60px;
@@ -265,16 +265,16 @@
   <header class="about-me modal modal__container">
     <button class="about-me__btn modal__toggle btn mouse-stalker-hoverable">
       <span class="visually-hidden">Обо мне</span>
-      <div class="btn-flip__wrapper btn-flip__wrapper--face">
+      <span class="btn-flip__wrapper btn-flip__wrapper--face">
         <svg class="btn__icon">
           <use xlink:href="#icon-about"></use>
         </svg>
-      </div>
-      <div class="btn-flip__wrapper btn-flip__wrapper--back">
+      </span>
+      <span class="btn-flip__wrapper btn-flip__wrapper--back">
         <svg class="btn__icon">
           <use xlink:href="#icon-close"></use>
         </svg>
-      </div>
+      </span>
     </button>
     <div class="about-me__wrapper">
       <h1 class="about-me__greeting">Привет, я Стас</h1>
@@ -329,16 +329,16 @@
     <aside class="portfolio__preferences preferences modal modal__container">
       <button class="preferences__btn btn modal__toggle mouse-stalker-hoverable">
         <span class="visually-hidden">Допольнительные настройки</span>
-        <div class="btn-flip__wrapper btn-flip__wrapper--face">
+        <span class="btn-flip__wrapper btn-flip__wrapper--face">
           <svg class="btn__icon">
             <use xlink:href="#icon-preferences"></use>
           </svg>
-        </div>
-        <div class="btn-flip__wrapper btn-flip__wrapper--back">
+        </span>
+        <span class="btn-flip__wrapper btn-flip__wrapper--back">
           <svg class="btn__icon">
             <use xlink:href="#icon-close"></use>
           </svg>
-        </div>
+        </span>
       </button>
       <div class="preferences__container">
         <fieldset class="preferences__theme-switch theme-switch">
@@ -352,17 +352,17 @@
       </div>
     </aside>
   </main>
+  <script src="script.js" defer></script>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "url": "http://mtyeyes.github.io",
+      "name": "Стас Коновалов",
+      "email": "mailto:mtyeyes@mail.ru",
+      "telephone": "+7(908)1108666"
+    }
+  </script>
 </body>
-<script src="script.js" defer></script>
-<script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Person",
-    "url": "http://mtyeyes.github.io",
-    "name": "Стас Коновалов",
-    "email": "mailto:mtyeyes@mail.ru",
-    "telephone": "+7(908)1108666"
-  }
-</script>
 
 </html>
