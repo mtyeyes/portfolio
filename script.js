@@ -332,7 +332,7 @@ const common = {
     });
   }
 
-  if(window.MouseEvent) {document.addEventListener('mousemove', createMouseStalker)};
+  if(window.innerWidth > 760) {document.addEventListener('mousemove', createMouseStalker)};
 })();
 
 // Adjust btns position on mouse move to stay on the same axis with mouse
