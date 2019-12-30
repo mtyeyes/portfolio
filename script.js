@@ -332,7 +332,12 @@ const common = {
     });
   }
 
-  if(window.innerWidth > 760) {document.addEventListener('mousemove', createMouseStalker)};
+  try {
+    document.createEvent('TouchEvent')
+  }
+  catch {
+  document.addEventListener('mousemove', createMouseStalker)
+  };
 })();
 
 // Adjust btns position on mouse move to stay on the same axis with mouse
@@ -372,20 +377,25 @@ const common = {
     },
   };
 
-  const throttledBtnsStickToMouse = new common.Throttle(btnsStickToMouse.adjustBtns, [event], 7, btnsStickToMouse);
-  btnsStickToMouse.getDimensions();
-
-  window.addEventListener('resize', function (event) {
+  try {
+    document.createEvent('TouchEvent')
+  }
+  catch {
+    const throttledBtnsStickToMouse = new common.Throttle(btnsStickToMouse.adjustBtns, [event], 7, btnsStickToMouse);
     btnsStickToMouse.getDimensions();
-  });
-
-  document.addEventListener('click', function (event) {
-    btnsStickToMouse.getDimensions();
-  });
-
-  document.addEventListener('mousemove', function (event) {
-    throttledBtnsStickToMouse.execute([event]);
-  });
+  
+    window.addEventListener('resize', function (event) {
+      btnsStickToMouse.getDimensions();
+    });
+  
+    document.addEventListener('click', function (event) {
+      btnsStickToMouse.getDimensions();
+    });
+  
+    document.addEventListener('mousemove', function (event) {
+      throttledBtnsStickToMouse.execute([event]);
+    });
+  }
 })();
 
 //show/hide modal containers
