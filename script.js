@@ -67,6 +67,13 @@ const common = {
   const projectsData = await fetchJson.json();
 
   const cards = [];
+  let skillsList;
+  let refreshProjectsListTimeout;
+  const browsers = (function () {
+    let allSupportedBrowsers = [];
+    Object.keys(projectsData).forEach(project => allSupportedBrowsers.push(projectsData[project]['supportedBrowsers']));
+    return common.mergeArraysAndRemoveRepeats(allSupportedBrowsers);
+  })();
 
   class ProjectCard {
     constructor(obj) {
@@ -78,21 +85,18 @@ const common = {
       this.link = function () {
         const link = common.createNewElement('a', ['project__link', 'mouse-stalker-hoverable'], {'href': obj['link'], 'target': '_blank', 'aria-label': obj['title']});
         const linkCaption = common.createNewElement('span', ['project__link-caption', 'visually-hidden'], '', obj['title']);
-        const svgContainer = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-        const svgUse = document.createElementNS('http://www.w3.org/2000/svg', 'use');
-        svgUse.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '#icon-link')
-        svgContainer.classList.add('project__link-svg');
+        const arrowIcon = createSvgUseElement('#icon-link', ['project__link-svg']);
         link.append(linkCaption);
-        svgContainer.append(svgUse);
-        link.append(svgContainer);
+        link.append(arrowIcon);
         return link;
       };
       this.skills = obj['skills'];
       this.suportedBrowsers = function () {
-        const browsers = ["chrome", "firefox", "safari", "ie"];
         const list = common.createNewElement('ul', ['project__browser-support-list']);
         browsers.forEach( browser => {
           const listItem = common.createNewElement('li', ['project__browser-support', `project__browser-support--${browser}`]);
+          const svgIcon = createSvgUseElement(`#icon-browser-${browser}`);
+          listItem.append(svgIcon);
           if (!obj['supportedBrowsers'].includes(browser)) {listItem.classList.add('project__browser-support--not-supported')}
           list.append(listItem);
         });
@@ -109,8 +113,6 @@ const common = {
     }
   };
 
-  let skillsList;
-
   class SkillsItem {
     constructor(technology) {
       this.checkbox = common.createNewElement('input', ['skills__skill-checkbox', 'visually-hidden'], {'type': 'checkbox', 'name': `${technology}`, 'id': technology, 'checked': 'true'});
@@ -120,6 +122,15 @@ const common = {
       this.container.append(this.label);
     }
   };
+
+  const createSvgUseElement = (svgIconName, classesArr) => {
+    const svgContainer = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    const svgUse = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+    svgUse.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', svgIconName);
+    if(classesArr) {classesArr.forEach(className => svgContainer.classList.add(className))};
+    svgContainer.append(svgUse);
+    return svgContainer
+  }
 
   const createAndFillProjectsList = (source) => {
     const projectsList = common.createNewElement('ul', ['portfolio__projects-list']);
@@ -131,7 +142,7 @@ const common = {
     return projectsList
   };
 
-  const fillTheUsedTechnologiesSelectors = (source) => {
+  const fillUsedTechnologiesSelectors = (source, projectsList) => {
     skillsList = common.createNewElement('ul', ['skills__list']);
     let skills = [];
     for (let obj in source) {
@@ -141,7 +152,14 @@ const common = {
     skills.forEach(str => {
       const newItem = new SkillsItem(str)
       skillsList.append(newItem['container']);
-    })
+      newItem['checkbox'].addEventListener('change', function(event) {
+        clearTimeout(refreshProjectsListTimeout);
+        projectsList.classList.add('portfolio__projects-list--updating');
+        refreshProjectsListTimeout = setTimeout(function() {
+          refreshProjectsList(projectsList);
+        }, 1200);
+      });
+    });
     document.querySelector('.preferences__skills').append(skillsList);
     skillsList.dispatchEvent(common.newElementInsertedInDomEvent);
   };
@@ -153,22 +171,24 @@ const common = {
     return selectedSkills;
   };
 
-  const refreshProjectsList = () => {
+  const refreshProjectsList = (projectsList) => {
     const selectedSkills = getSelectedSkills();
     cards.forEach(card => {
       let containsSelectedSkills = card['skills'].some(skill => selectedSkills.includes(skill));
       (containsSelectedSkills) ? card['cardContainer'].classList.remove('project__card--hide'): card['cardContainer'].classList.add('project__card--hide');
     });
+    clearTimeout(refreshProjectsListTimeout);
+    projectsList.classList.remove('portfolio__projects-list--updating');
   };
 
   (function () {
     const filledList = createAndFillProjectsList(projectsData);
-    fillTheUsedTechnologiesSelectors(projectsData);
+    fillUsedTechnologiesSelectors(projectsData, filledList);
     document.querySelector('.portfolio__loader').remove();
     document.querySelector('.portfolio').prepend(filledList);
     filledList.dispatchEvent(common.newElementInsertedInDomEvent);
     document.querySelector('.preferences__btn').addEventListener('click', function (event) {
-      refreshProjectsList();
+      refreshProjectsList(filledList);
     })
   })();
 })();
@@ -312,7 +332,7 @@ const common = {
     });
   }
 
-  document.addEventListener('mousemove', createMouseStalker)
+  if(window.MouseEvent) {document.addEventListener('mousemove', createMouseStalker)};
 })();
 
 // Adjust btns position on mouse move to stay on the same axis with mouse
@@ -400,6 +420,7 @@ const common = {
     };
     showText(context) {
       clearTimeout(context.textIsPainting);
+      if(window.innerWidth < 1100) {return};
       context.textIsPainting = setTimeout(function() {
         if (context.foldableTextContainer.textContent.length < context.fullText.length) {
           context.foldableTextContainer.textContent = context.foldableTextContainer.textContent + context.fullText[context.foldableTextContainer.textContent.length];

@@ -4,7 +4,7 @@
     "supportedBrowsers": ["chrome", "firefox", "safari", "ie"],
     "description": "Адапитивный pixel-perfect, JS, БЭМ",
     "data-lang-en": "Adaptive pixel-perfect, JS, BEM",
-    "skills": ["JavaScript", "Pixel Perfect", "BEM", "Gulp", "Parcel"],
+    "skills": ["JavaScript", "Pixel perfect", "BEM", "Gulp", "Parcel"],
     "link": "https://mtyeyes.github.io/dark-ink/"
   },
   "screenPalette": {
@@ -28,7 +28,7 @@
     "supportedBrowsers": ["chrome", "firefox", "safari", "ie"],
     "description": "Отзывчивый pixel-perfect, БЭМ",
     "data-lang-en": "Responsive pixel-perfect, BEM",
-    "skills": ["Pixel Perfect", "Gulp", "BEM"],
+    "skills": ["Pixel perfect", "Gulp", "BEM"],
     "link": "https://mtyeyes.github.io/sedona/"
   }
 }
