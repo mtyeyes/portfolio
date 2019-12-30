@@ -117,7 +117,7 @@
   grid-template-columns: 1fr 1fr 1fr 60px 1fr 1fr 1fr;
   grid-template-rows: repeat(4, auto) 60px;
   visibility: hidden;
-  top: -40%;
+  top: -100%;
   left: 0;
   right: 0;
   margin: 0 auto;
@@ -132,7 +132,7 @@
   color: var(--font-color);
   font-size: 1.2rem;
   z-index: 40;
-  transition: 1s;
+  transition: 500ms;
 }
 
 .about-me__wrapper {
