@@ -421,6 +421,7 @@
   border-radius: 0 0 15px 15px;
   transform: rotateX(-90deg);
   opacity: 0;
+  overflow: hidden;
   transition: 400ms;
   transform-origin: top;
   will-change: transform, opacity;
