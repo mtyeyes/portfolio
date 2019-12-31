@@ -1,1 +1,36 @@
-const compilationTime="11319";let urlsToCache=["/palette/index.html","/palette/manifest.json","/palette/css/style.css","/palette/js/script.js"];self.addEventListener("install",function(e){e.waitUntil(caches.open("11319").then(function(e){return e.addAll(urlsToCache)}),caches.keys().then(function(e){e.forEach(function(e){"11319"!==e&&caches.delete(e)})}))}),self.addEventListener("fetch",function(e){console.log(caches.match(e.request)),console.log(e.request),e.respondWith(caches.match(e.request).then(function(t){return t||fetch(e.request)}))});
+const compilationTime='113110';let urlsToCache = [
+  '/palette/index.html',
+  '/palette/manifest.json',
+  '/palette/css/style.css',
+  '/palette/js/script.js'
+]
+
+self.addEventListener('install', function(event) {
+  event.waitUntil(
+    caches.open(compilationTime).then(function(cache) {
+      return cache.addAll(urlsToCache);
+    }),
+    caches.keys().then(function(cacheNames) {
+      cacheNames.forEach(function(cacheName) {
+        if (cacheName !== compilationTime) caches.delete(cacheName)
+      })
+    })
+  );
+});
+
+self.addEventListener('fetch', function(event) {
+  event.respondWith( async function() {
+    caches.match(event.request)
+      .then(function(response) {
+        if (response) { return response; }
+        const responce = await fetch(event.request);
+        const responseToCache = response.clone();
+        event.waitUntil(async function () {
+          const cache = await caches.open(cacheName);
+          await cache.put(event.request, responseToCache);
+        }());
+        return responce;
+      })
+    }
+  );
+});
