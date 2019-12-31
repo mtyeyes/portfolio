@@ -375,15 +375,11 @@ const common = {
   if(!('ontouchstart' in window)) {
     const throttledBtnsStickToMouse = new common.Throttle(btnsStickToMouse.adjustBtns, [event], 7, btnsStickToMouse);
     btnsStickToMouse.getDimensions();
-  
+
     window.addEventListener('resize', function (event) {
       btnsStickToMouse.getDimensions();
     });
-  
-    document.addEventListener('click', function (event) {
-      btnsStickToMouse.getDimensions();
-    });
-  
+
     document.addEventListener('mousemove', function (event) {
       throttledBtnsStickToMouse.execute([event]);
     });
