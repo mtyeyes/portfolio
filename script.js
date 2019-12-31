@@ -332,12 +332,7 @@ const common = {
     });
   }
 
-  try {
-    document.createEvent('TouchEvent')
-  }
-  catch {
-  document.addEventListener('mousemove', createMouseStalker)
-  };
+  if(!('ontouchstart' in window)) {document.addEventListener('mousemove', createMouseStalker)};
 })();
 
 // Adjust btns position on mouse move to stay on the same axis with mouse
@@ -377,10 +372,7 @@ const common = {
     },
   };
 
-  try {
-    document.createEvent('TouchEvent')
-  }
-  catch {
+  if(!('ontouchstart' in window)) {
     const throttledBtnsStickToMouse = new common.Throttle(btnsStickToMouse.adjustBtns, [event], 7, btnsStickToMouse);
     btnsStickToMouse.getDimensions();
   
