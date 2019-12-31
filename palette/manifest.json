@@ -1,7 +1,7 @@
 {
     "name": "Screen Palette",
     "short_name": "Palette",
-    "start_url": "/index.html",
+    "start_url": "/palette/index.html",
     "icons": [{
           "src": "img/icon-128x128.png",
           "sizes": "128x128",
