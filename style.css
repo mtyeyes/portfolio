@@ -558,10 +558,18 @@
   transition: 200ms;
 }
 
+.skills__skill-checkbox + .skills__skill-label {
+  color: var(--border-color);
+}
+
+.skills__skill-checkbox:checked + .skills__skill-label {
+  color: var(--font-color);
+}
+
 .site-preferences__checkbox:focus + .site-preferences__label,
 .skills__skill-checkbox:focus + .skills__skill-label,
-.skills__skill-label:focus,
-.skills__skill-label:hover {
+.skills__skill-checkbox + .skills__skill-label:focus,
+.skills__skill-checkbox + .skills__skill-label:hover {
   color: var(--main-color);
 }
 
