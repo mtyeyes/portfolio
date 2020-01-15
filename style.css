@@ -453,7 +453,6 @@
   margin: 0;
   padding: 0;
   width: 0;
-  overflow: hidden;
   transition: 500ms;
   z-index: 10;
 }
@@ -461,7 +460,6 @@
 .portfolio__preferences.modal--show {
   flex-shrink: 0;
   width: 270px;
-  overflow: visible;
   box-shadow: -2px 0 15px 2px var(--border-color);
 }
 
