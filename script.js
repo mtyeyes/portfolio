@@ -344,8 +344,8 @@ const common = {
     sideBtn: document.querySelector('.preferences__btn'),
     getDimensions: function () {
       this.btnsSideLength = common.getValueOfProperty(this.topBtn, 'width').replace('px', '');
-      this.topBtnOffset = common.getValueOfProperty(this.topBtn, 'left').replace('px', '');
-      this.sideBtnOffset = common.getValueOfProperty(this.sideBtn, 'top').replace('px', '');
+      this.topBtnOffset = (document.documentElement.clientWidth - this.btnsSideLength) / 2;
+      this.sideBtnOffset = (document.documentElement.clientHeight - this.btnsSideLength) / 2;
     },
     setPosition: function (element, cursorPosition, axis) {
       this.allowedPositionRangeX = [0, document.documentElement.clientWidth - this.btnsSideLength];
