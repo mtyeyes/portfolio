@@ -86,7 +86,7 @@
 .preferences__btn.modal__toggle--toggled {
   right: 210px;
   transform: none;
-  transition: 300ms;
+  transition: 500ms;
 }
 
 .about-me__btn.modal__toggle--toggled::before {
@@ -162,7 +162,7 @@
   border-top: 2px solid var(--border-color);
   border-radius: 0 0 23px 23px;
   box-sizing: border-box;
-  transition: 1s;
+  transition: 500ms;
 }
 
 .about-me__greeting {
@@ -506,6 +506,7 @@
 .preferences__skills {
   flex-shrink: 1;
   overflow-y: auto;
+  overflow-x: hidden;
   border: none;
   margin: 10vh 0 auto;
   scrollbar-width: thin;
@@ -768,6 +769,7 @@
   }
 
   .preferences__skills {
+    margin-top: 20px;
     scrollbar-width: auto;
   }
 

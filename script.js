@@ -219,7 +219,7 @@ const common = {
     }
   };
 
-  setTheme = (theme) => {
+  const setTheme = (theme) => {
     for (let [propertyName, value] of Object.entries(mapThemesStyles[theme])) {
       document.documentElement.style.setProperty(propertyName, value);
     };
@@ -413,8 +413,7 @@ const common = {
       this.animationSpeed = common.getValueOfProperty(element, 'transition-duration').replace('s', '') * 750;
       this.paintingSpeed = Math.floor(this.animationSpeed / this.fullText.length);
       this.container.querySelector('.contacts__link').append(this.foldableTextContainer);
-      this.context = this;
-      this.addEventListeners(this.context)
+      this.addEventListeners(this);
     };
     showText(context) {
       clearTimeout(context.textIsPainting);
@@ -429,7 +428,7 @@ const common = {
     hideText(context) {
       clearTimeout(context.textIsPainting);
       context.textIsPainting = setTimeout(function() {
-        if (context.foldableTextContainer.textContent.length != 0) {
+        if (context.foldableTextContainer.textContent.length !== 0) {
           context.foldableTextContainer.textContent = context.foldableTextContainer.textContent.slice(0, -1);
           context.hideText(context);
         };
@@ -449,6 +448,9 @@ const common = {
       });
       context.container.addEventListener('focusout', function(event) {
         context.hideText(context);
+      });
+      window.addEventListener('resize', function(event) {
+        if(window.innerWidth < 1100 && this.foldableTextContainer.textContent.length !== 0) {context.hideText(context)};
       });
     }
   };
