@@ -62,14 +62,14 @@ const common = {
 //creating the projects cards and setting up the filter in preferences menu
 //-------------------------------------------------------------------------
 
-(async function () {
+(async function() {
   const fetchJson = await fetch('resources/projects.json');
   const projectsData = await fetchJson.json();
 
   const cards = [];
   let skillsList;
   let refreshProjectsListTimeout;
-  const browsers = (function () {
+  const browsers = (function() {
     let allSupportedBrowsers = [];
     Object.keys(projectsData).forEach(project => allSupportedBrowsers.push(projectsData[project]['supportedBrowsers']));
     return common.mergeArraysAndRemoveRepeats(allSupportedBrowsers);
@@ -82,7 +82,7 @@ const common = {
       } else {
         this.thumbnail = common.createNewElement('img', ['project__thumbnail', 'project__thumbnail--img'], {'src': `resources/${obj['title']}.jpg`, 'alt': `${obj['title']} thumbnail`});
       }
-      this.link = function () {
+      this.link = function() {
         const link = common.createNewElement('a', ['project__link', 'mouse-stalker-hoverable'], {'href': obj['link'], 'target': '_blank', 'aria-label': obj['title']});
         const linkCaption = common.createNewElement('span', ['project__link-caption', 'visually-hidden'], '', obj['title']);
         const arrowIcon = createSvgUseElement('#icon-link', ['project__link-svg']);
@@ -91,7 +91,7 @@ const common = {
         return link;
       };
       this.skills = obj['skills'];
-      this.suportedBrowsers = function () {
+      this.suportedBrowsers = function() {
         const list = common.createNewElement('ul', ['project__browser-support-list']);
         browsers.forEach( browser => {
           const listItem = common.createNewElement('li', ['project__browser-support', `project__browser-support--${browser}`]);
@@ -181,7 +181,7 @@ const common = {
     projectsList.classList.remove('portfolio__projects-list--updating');
   };
 
-  (function () {
+  (function() {
     const filledList = createAndFillProjectsList(projectsData);
     fillUsedTechnologiesSelectors(projectsData, filledList);
     document.querySelector('.portfolio__loader').remove();
@@ -196,7 +196,7 @@ const common = {
 // Theme switch
 //-------------
 
-(function () {
+(function() {
   const themeSwitcher = document.querySelector('.site-preferences__checkbox--theme-switch');
   const mapThemesStyles = {
     ' light': {
@@ -242,7 +242,7 @@ const common = {
 // Mouse stalker (circle under mouse pointer)
 //-------------------------------------------
 
-(function () {
+(function() {
   const mouseStalker = {
     stalker: common.createNewElement('div', ['mouse-stalker']),
     isSticked: false,
@@ -289,10 +289,10 @@ const common = {
       this.stalker.style.height = null;
       this.stalker.style.removeProperty('border-radius');
     },
-    getHoverTargetDimensions: function () {
+    getHoverTargetDimensions: function() {
       return this.hoverTarget.getClientRects()[0];
     },
-    updateStalkerDimensions: function () {
+    updateStalkerDimensions: function() {
       const dimensions = this.getHoverTargetDimensions();
       stalkerWidth = dimensions['width'] * 1.2;
       stalkerHeight = dimensions['height'] * 1.2;
@@ -338,11 +338,11 @@ const common = {
 // Adjust btns position on mouse move to stay on the same axis with mouse
 //-----------------------------------------------------------------------
 
-(async function () {
+(async function() {
   const btnsStickToMouse = {
     topBtn: document.querySelector('.about-me__btn'),
     sideBtn: document.querySelector('.preferences__btn'),
-    getDimensions: function () {
+    getDimensions: function() {
       this.btnsSideLength = common.getValueOfProperty(this.topBtn, 'width').replace('px', '');
       this.topBtnOffset = (document.documentElement.clientWidth - this.btnsSideLength) / 2;
       this.sideBtnOffset = (document.documentElement.clientHeight - this.btnsSideLength) / 2;
@@ -389,50 +389,71 @@ const common = {
 //show/hide modal containers
 //--------------------------
 
-(function () {
+(function() {
   const modalElements = document.querySelectorAll('.modal');
   modalElements.forEach(element => {
     const btn = element.querySelector('.modal__toggle');
 
-    btn.addEventListener('click', function () {
+    btn.addEventListener('click', function() {
       element.classList.toggle('modal--show');
       btn.classList.toggle('modal__toggle--toggled');
     })
   });
 })();
 
-//show foldable description
-//-------------------------
+//show foldable description on hover/focus
+//----------------------------------------
 
-(function () {
-  class UnfoldableLinkDescription {
-    constructor(element) {
+(function() {
+  class UnfoldableDescriptonsList {
+    constructor(nodeList) {
+      this._currentUnfoldedDescription = null;
+      nodeList.forEach(element => new UnfoldableDescription(element, this));
+    };
+    maintainOneDescriptionUnfolded(hoveredElement) {
+      if (this.currentUnfoldedDescription !== hoveredElement && this.currentUnfoldedDescription !== null) {this.hidePreviouslyUnfoldedDescription()};
+      if (this.currentUnfoldedDescription !== hoveredElement) {this.currentUnfoldedDescription = hoveredElement};
+    };
+    hidePreviouslyUnfoldedDescription() {
+      this.currentUnfoldedDescription.hideText(this.currentUnfoldedDescription);
+    };
+    set currentUnfoldedDescription(target) {
+      (target) ? this._currentUnfoldedDescription = target : this._currentUnfoldedDescription = null;
+    };
+    get currentUnfoldedDescription() {
+      return this._currentUnfoldedDescription;
+    }
+  };
+
+  class UnfoldableDescription {
+    constructor(element, list) {
       this.container = element;
       this.fullText = element.dataset.unfoldContent;
       this.foldableTextContainer = common.createNewElement('span', ['contacts__unfoldableText']);
       this.animationSpeed = common.getValueOfProperty(element, 'transition-duration').replace('s', '') * 750;
       this.paintingSpeed = Math.floor(this.animationSpeed / this.fullText.length);
       this.container.querySelector('.contacts__link').append(this.foldableTextContainer);
+      this.list = list;
       this.addEventListeners(this);
     };
     showText(context) {
+      context.list.maintainOneDescriptionUnfolded(context);
       clearTimeout(context.textIsPainting);
-      if(window.innerWidth < 1100) {return};
-      context.textIsPainting = setTimeout(function() {
-        if (context.foldableTextContainer.textContent.length < context.fullText.length) {
+      if (context.foldableTextContainer.textContent.length < context.fullText.length && window.innerWidth > 1100) {
+        context.textIsPainting = setTimeout(function() {
           context.foldableTextContainer.textContent = context.foldableTextContainer.textContent + context.fullText[context.foldableTextContainer.textContent.length];
           context.showText(context);
-        };
-      }, context.paintingSpeed);
+        }, context.paintingSpeed);
+      };
     };
     hideText(context) {
       clearTimeout(context.textIsPainting);
-      context.textIsPainting = setTimeout(function() {
-        if (context.foldableTextContainer.textContent.length !== 0) {
+      if (context.foldableTextContainer.textContent.length !== 0) {
+        context.textIsPainting = setTimeout(function() {
           context.foldableTextContainer.textContent = context.foldableTextContainer.textContent.slice(0, -1);
           context.hideText(context);
-        };
-      }, context.paintingSpeed);
+        }, (context.paintingSpeed * 0.7));
+      };
     };
     addEventListeners(context) {
       context.container.addEventListener('mouseenter', function(event) {
@@ -450,18 +471,19 @@ const common = {
         context.hideText(context);
       });
       window.addEventListener('resize', function(event) {
-        if(window.innerWidth < 1100 && this.foldableTextContainer.textContent.length !== 0) {context.hideText(context)};
+        if(window.innerWidth < 1100 && context.foldableTextContainer.textContent.length !== 0) {context.hideText(context)};
       });
     }
   };
 
-  document.querySelectorAll('.contacts__contact').forEach(element => new UnfoldableLinkDescription(element));
+  new UnfoldableDescriptonsList(document.querySelectorAll('.contacts__contact'));
+
 })();
 
 //change language
 //---------------
 
-(function () {
+(function() {
 let multilanguageContainers = document.querySelectorAll('[data-lang-ru]');
 const changeLanguageCheckbox = document.querySelector('.site-preferences__checkbox--language-change');
 const title = {
