@@ -407,7 +407,7 @@ const common = {
 (function() {
   class UnfoldableDescriptonsList {
     constructor(nodeList) {
-      this._currentUnfoldedDescription = null;
+      this.currentUnfoldedDescription = null;
       nodeList.forEach(element => new UnfoldableDescription(element, this));
     };
     maintainOneDescriptionUnfolded(hoveredElement) {
@@ -417,12 +417,6 @@ const common = {
     hidePreviouslyUnfoldedDescription() {
       this.currentUnfoldedDescription.hideText(this.currentUnfoldedDescription);
     };
-    set currentUnfoldedDescription(target) {
-      (target) ? this._currentUnfoldedDescription = target : this._currentUnfoldedDescription = null;
-    };
-    get currentUnfoldedDescription() {
-      return this._currentUnfoldedDescription;
-    }
   };
 
   class UnfoldableDescription {
