@@ -518,3 +518,44 @@ document.addEventListener('elementinserted', function (event) {
   applyLanguageToNewElements(event);
 });
 })();
+
+//safari temporal fix----------------------------------------------------------------------------------------------------------
+// I know this is a bad practice but there is a bug with z-index in element with transform, that was previously unknown to me.
+// And in all those talks about css grid no one mentioned that you couldn't use the "min-max" values in grid-template property,
+// so for a week or two there would be bad piece of code for that one special browser. Shame on me, I guess
+//-----------------------------------------------------------------------------------------------------------------------------
+
+document.addEventListener('elementinserted', function (event) {
+  if (navigator.userAgent.indexOf('Safari') !== -1 && navigator.userAgent.indexOf('Chrome') === -1) {
+    document.addEventListener('elementinserted', function (event) {
+      const cards = event.target.querySelectorAll('.project__card');
+      const container = event.target;
+
+      const calculateGridTemplate = () => {
+        const containerWidth = container.getBoundingClientRect().width;
+        let columnWidth = (window.innerWidth > 600) ? containerWidth / 2 - 50 : containerWidth - 60;
+        if (columnWidth < 300) {columnWidth = 300};
+        let rowHeight = (window.innerWidth > 600) ? columnWidth * 0.7 : columnWidth;
+        if (rowHeight < 300) {rowHeight = 300};
+        return {
+          'grid-template-columns': `repeat(auto-fill, ${columnWidth}px)`,
+          'grid-template-rows': `repeat(auto-fit, ${rowHeight}px)`,
+          'justify-content': 'center'
+        }
+      };
+
+      const adjustGridTemplateStyles = () => {
+        for (let [propertyName, value] of Object.entries(calculateGridTemplate())) {
+          container.style.setProperty(propertyName, value);
+        };
+      };
+
+      cards.forEach(card => card.style.transform = 'none');
+      adjustGridTemplateStyles();
+
+      window.addEventListener('resize', function(event) {
+        adjustGridTemplateStyles();
+      })
+    });
+  };
+});
