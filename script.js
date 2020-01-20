@@ -533,7 +533,7 @@ document.addEventListener('elementinserted', function (event) {
 
       const calculateGridTemplate = () => {
         const containerWidth = container.getBoundingClientRect().width;
-        let columnWidth = (window.innerWidth > 600) ? containerWidth / 2 - 50 : containerWidth - 60;
+        let columnWidth = (window.innerWidth > 600) ? containerWidth / 2 - 50 : containerWidth - 330;
         if (columnWidth < 300) {columnWidth = 300};
         let rowHeight = (window.innerWidth > 600) ? columnWidth * 0.7 : columnWidth;
         if (rowHeight < 300) {rowHeight = 300};

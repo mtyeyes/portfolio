@@ -463,7 +463,7 @@
   box-shadow: -2px 0 15px 2px var(--border-color);
 }
 
-.portfolio__preferences::before {
+.portfolio__preferences.modal--show::before {
   content: "";
   position: absolute;
   top: 0;
