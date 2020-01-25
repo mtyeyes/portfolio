@@ -529,7 +529,7 @@ document.addEventListener('elementinserted', function (event) {
       if(cards) {
         cards.forEach(card => {
           card.style.transform = 'none';
-          card.style.boxShadow = 'none';
+          card.style.boxShadow = '0 0 10px 10px var(--border-color)';
         });
       };
     });
