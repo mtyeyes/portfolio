@@ -465,6 +465,38 @@
   opacity: 1;
 }
 
+.project__card--portal-transition {
+  transform: none;
+  border-radius: 0;
+}
+
+.project__card--portal-transition .project__thumbnail {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  z-index: 100;
+  animation: portal-transition 1s;
+}
+
+@keyframes portal-transition {
+  0% {
+    top: var(--y-offset);
+    left: var(--x-offset);
+    width: 30%;
+    height: 30%;
+  }
+
+  100% {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+}
+
 .portfolio__preferences {
   position: relative;
   display: flex;

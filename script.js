@@ -77,19 +77,12 @@ const common = {
 
   class ProjectCard {
     constructor(obj) {
+      this.link = this.createLink(obj);
       if ('HTMLPortalElement' in window) {
-        this.thumbnail = common.createNewElement('portal', ['project__thumbnail', 'project__thumbnail--portal'], {'src': obj['link']});
+        this.thumbnail = this.createPortal(obj);
       } else {
         this.thumbnail = common.createNewElement('img', ['project__thumbnail', 'project__thumbnail--img'], {'src': `resources/${obj['title']}.jpg`, 'alt': `${obj['title']} thumbnail`});
       }
-      this.link = function() {
-        const link = common.createNewElement('a', ['project__link', 'mouse-stalker-hoverable'], {'href': obj['link'], 'target': '_blank', 'aria-label': obj['title']});
-        const linkCaption = common.createNewElement('span', ['project__link-caption', 'visually-hidden'], '', obj['title']);
-        const arrowIcon = createSvgUseElement('#icon-link', ['project__link-svg']);
-        link.append(linkCaption);
-        link.append(arrowIcon);
-        return link;
-      };
       this.skills = obj['skills'];
       this.suportedBrowsers = function() {
         const list = common.createNewElement('ul', ['project__browser-support-list']);
@@ -107,10 +100,43 @@ const common = {
       this.cardContainer = common.createNewElement('li', ['project__card']);
       this.descriptionWrapper.append(this.description);
       this.cardContainer.append(this.thumbnail);
-      this.cardContainer.append(this.link());
+      this.cardContainer.append(this.link);
       this.cardContainer.append(this.suportedBrowsers());
       this.cardContainer.append(this.descriptionWrapper);
-    }
+    };
+    createLink(obj) {
+      const link = common.createNewElement('a', ['project__link', 'mouse-stalker-hoverable'], {'href': obj['link'], 'target': '_blank', 'aria-label': obj['title']});
+      const linkCaption = common.createNewElement('span', ['project__link-caption', 'visually-hidden'], '', obj['title']);
+      const arrowIcon = createSvgUseElement('#icon-link', ['project__link-svg']);
+      link.append(linkCaption);
+      link.append(arrowIcon);
+      return link;
+    };
+    createPortal(obj) {
+      const portal = common.createNewElement('portal', ['project__thumbnail', 'project__thumbnail--portal'], {'src': obj['link']});
+      const context = this;
+      this.link.addEventListener('click', function(event) {
+        event.preventDefault();
+        context.travelThroughPortal(event);
+      });
+      return portal;
+    };
+    travelThroughPortal() {
+      const portalContainer = event.currentTarget.parentElement;
+      const portal = this.thumbnail;
+      let portalDimensions = portal.getBoundingClientRect();
+      let animationValues = {
+        '--x-offset': `${portalDimensions.left}px`,
+        '--y-offset': `${portalDimensions.top}px`
+      };
+      for (let [propertyName, value] of Object.entries(animationValues)) {
+        portalContainer.style.setProperty(propertyName, value)
+      }
+      portalContainer.classList.add('project__card--portal-transition');
+      portal.addEventListener('transitionend', function (event) {
+        portal.activate();
+      });
+    };
   };
 
   class SkillsItem {
