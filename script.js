@@ -488,6 +488,7 @@ const changeLanguage = (language) => {
   multilanguageContainers.forEach(element => element.textContent = element.dataset[(`lang${language}`)]);
   document.title = title[language];
   updateCheckbox(language);
+  document.documentElement.setAttribute('lang', language.toLowerCase());
   localStorage.setItem('language', language);
 };
 const applyLanguageToNewElements = (event) => {
