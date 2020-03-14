@@ -38,7 +38,12 @@
 .instruction__container {
   color: #007db5;
   background-color: #ffffff;
+  border: 0 solid #eaeaea;
+}
+
+.instruction__container--show {
   border: 3px solid #eaeaea;
+  border-top: none;
 }
 
 .instruction__mobile-warning {
@@ -53,4 +58,20 @@
 
 .copy-script__btn {
   background-position-x: 0;
+}
+
+.description__btn-logo {
+  color: #f8f8f8;
+  text-shadow: #e95420 2px 2px, #e95420 -2px 2px, #e95420 2px -2px, #e95420 -2px -2px;
+}
+
+.description__run-demo-btn:hover .description__btn-logo,
+.description__run-demo-btn:focus .description__btn-logo {
+  color: #e95420;
+  text-shadow: none;
+}
+
+.description__run-demo-btn:active span {
+  color: #e95420;
+  text-shadow: none;
 }

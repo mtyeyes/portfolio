@@ -1,9 +1,18 @@
 // Download by click
 //----------------------------------------
 
-document.querySelector('.download__btn').addEventListener('click', function(event) {
-  window.open('/overlay-infuser.zip');
-});
+document.querySelector('.description__run-demo-btn').addEventListener('click', runDemo);
+
+function runDemo() {
+  var script = document.createElement("script");
+  script.type = "text/javascript";
+  script.src = "./js/infuser.js";
+  document.body.appendChild(script);
+  document.querySelector('.description__run-demo-btn').removeEventListener('click', runDemo);
+  document.querySelector('.description__run-demo-btn').style.opacity = '0';
+  document.querySelector('.description__run-demo-btn').style.cursor = 'default';
+  document.querySelector('.description__run-demo-btn').disabled = true;
+};
 
 // script to clipboard
 //----------------------------------------

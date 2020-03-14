@@ -1,14 +1,24 @@
 // Download by click
 //----------------------------------------
 
-document.querySelector('.download__btn').addEventListener('click', function(event) {
-  window.open('/overlay-infuser.zip');
-});
+const runDemoBtn = document.querySelector('.description__run-demo-btn');
+
+runDemoBtn.addEventListener('click', runDemo);
+
+function runDemo() {
+  const script = document.createElement("script");
+  script.type = "text/javascript";
+  script.src = "./js/infuser.js";
+  document.body.append(script);
+  runDemoBtn.removeEventListener('click', runDemo);
+  runDemoBtn.disabled = true;
+  runDemoBtn.style.visibility = 'hidden';
+};
 
 // script to clipboard
 //----------------------------------------
 
-let toClipboardBtn = document.querySelector('.copy-script__btn')
+const toClipboardBtn = document.querySelector('.copy-script__btn')
 
 btnToggleState = (state, phrase) => {
   toClipboardBtn.classList.remove('copy-script__btn--working');
@@ -22,6 +32,10 @@ btnToggleState = (state, phrase) => {
 };
 
 getScript = () => {
+  if(navigator.userAgent.toLowerCase().indexOf('firefox') !== -1) {
+    btnToggleState('copy-script__btn--fail', 'Sorry, but firefox is preventing fetched file content to be copied to clipboard');
+    return
+  };
   fetch('js/infuser.js')
   .then(
     function(response) {
@@ -57,7 +71,7 @@ toClipboardBtn.addEventListener ('click', function(event) {
 // theme switch
 //----------------------------------------
 
-let themesStyles = {
+const themesStyles = {
   light : {
     '--theme': ' light',
     '--background-color': '#ffffff',
@@ -81,15 +95,15 @@ let themesStyles = {
 };
 
 setTheme = (theme) => {
-  let styles = document.documentElement.style;
+  const styles = document.documentElement.style;
   if (theme === ' light') {
-    let stylesToApply = Object.keys(themesStyles.light);
+    const stylesToApply = Object.keys(themesStyles.light);
     for (let i = 0; i < stylesToApply.length; i++) {
       styles.setProperty(stylesToApply[i], themesStyles.light[stylesToApply[i]]);
     }
     localStorage.setItem('theme', ' light');
   } else {
-    let stylesToApply = Object.keys(themesStyles.dark);
+    const stylesToApply = Object.keys(themesStyles.dark);
     for (let i = 0; i < stylesToApply.length; i++) {
       styles.setProperty(stylesToApply[i], themesStyles.dark[stylesToApply[i]]);
     }
@@ -115,8 +129,8 @@ if (localStorage.getItem('theme')) { setTheme(localStorage.getItem('theme')) };
 // show/hide instructions text
 //----------------------------------------
 
-let instructionToggleBtn = document.querySelector ('.instruction__toggle-btn');
-let instructions = document.querySelector('.instruction__container');
+const instructionToggleBtn = document.querySelector ('.instruction__toggle-btn');
+const instructions = document.querySelector('.instruction__container');
 
 instructionToggleBtn.addEventListener ('click', function(event) {
   instructions.classList.toggle('instruction__container--show');
