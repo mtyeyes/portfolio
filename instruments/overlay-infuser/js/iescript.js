@@ -54,7 +54,7 @@ function customPropertiesSubstitute() {
   styleSheet = document.createElement('link');
   styleSheet.setAttribute('rel', 'stylesheet');
   styleSheet.setAttribute('type', 'text/css');
-  styleSheet.setAttribute('href', '/css/customPropertiesSubstitute.css');
+  styleSheet.setAttribute('href', './css/customPropertiesSubstitute.css');
   document.getElementsByTagName('head')[0].appendChild(styleSheet);
 };
 

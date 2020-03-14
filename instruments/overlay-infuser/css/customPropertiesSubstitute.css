@@ -39,6 +39,7 @@
   color: #007db5;
   background-color: #ffffff;
   border: 0 solid #eaeaea;
+  border-top: none;
 }
 
 .instruction__container--show {
