@@ -101,19 +101,19 @@ setTheme = (theme) => {
     for (let i = 0; i < stylesToApply.length; i++) {
       styles.setProperty(stylesToApply[i], themesStyles.light[stylesToApply[i]]);
     }
-    localStorage.setItem('theme', ' light');
+    localStorage.setItem('infuser-theme', ' light');
   } else {
     const stylesToApply = Object.keys(themesStyles.dark);
     for (let i = 0; i < stylesToApply.length; i++) {
       styles.setProperty(stylesToApply[i], themesStyles.dark[stylesToApply[i]]);
     }
-    localStorage.setItem('theme', ' dark');
+    localStorage.setItem('infuser-theme', ' dark');
   };
 };
 
 changeTheme = () => {
-  if (localStorage.getItem('theme')) {
-    currentTheme = localStorage.getItem('theme');
+  if (localStorage.getItem('infuser-theme')) {
+    currentTheme = localStorage.getItem('infuser-theme');
   } else {
     currentTheme = getComputedStyle(document.documentElement).getPropertyValue('--theme');
   };
@@ -124,7 +124,7 @@ document.querySelector('.settings__theme-btn').addEventListener ('click', functi
   changeTheme();
 });
 
-if (localStorage.getItem('theme')) { setTheme(localStorage.getItem('theme')) };
+if (localStorage.getItem('infuser-theme')) { setTheme(localStorage.getItem('infuser-theme')) };
 
 // show/hide instructions text
 //----------------------------------------
