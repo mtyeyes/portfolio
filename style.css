@@ -81,13 +81,24 @@
   order: 2;
   left: 0;
   grid-area: 2 / 4 / 3 / 5;
-  flex-grow: 0;
   margin: 0 auto;
   transform: none;
 }
 
+.about-me__btn.modal__toggle--toggled::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: var(--btn-width);
+  width: 60vw;
+  transform: translateX(calc(-50% + (var(--btn-width) / 2)));
+}
+
 .preferences__btn.modal__toggle--toggled {
-  right: 210px;
+  position: relative;
+  top: 0;
+  margin: 0 auto;
   transform: none;
   transition: 500ms;
 }
@@ -99,18 +110,13 @@
   top: calc(-50vh + 50%);
   width: 100%;
   height: 200vh;
-  background-color: var(--background-darker-color);
-  border-left: 2px solid var(--border-color);
-  border-right: 2px solid var(--border-color);
-  box-sizing: border-box;
-  z-index: -1;
 }
 
 .about-me {
   position: fixed;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 60px 1fr 1fr 1fr;
-  grid-template-rows: 1fr 60px;
+  grid-template-columns: 1fr 1fr 1fr var(--btn-width) 1fr 1fr 1fr;
+  grid-template-rows: 1fr var(--btn-width);
   visibility: hidden;
   top: -100%;
   left: 0;
@@ -149,7 +155,7 @@
   width: 60vw;
   min-width: 500px;
   max-width: 1150px;
-  height: 60px;
+  height: var(--btn-width);
   background-color: var(--background-darker-color);
   border-top: 2px solid var(--border-color);
   border-radius: 0 0 23px 23px;
@@ -273,6 +279,8 @@
   width: 46%;
   height: 18vw;
   margin-bottom: 3vw;
+  margin-left: auto;
+  margin-right: auto;
   flex-grow: 0;
   min-width: 300px;
   min-height: 300px;
@@ -338,8 +346,8 @@
   position: absolute;
   display: flex;
   justify-content: center;
-  width: 60px;
-  height: 60px;
+  width: var(--btn-width);
+  height: var(--btn-width);
   top: calc(50% - 30px);
   left: calc(50% - 30px);
   border: 2px solid var(--main-color);
@@ -491,7 +499,6 @@
 
 .portfolio__preferences {
   position: relative;
-  display: flex;
   margin: 0;
   padding: 0;
   width: 0;
@@ -501,19 +508,45 @@
 
 .portfolio__preferences.modal--show {
   flex-shrink: 0;
-  width: 270px;
+  width: var(--sidebar-width);
   box-shadow: -2px 0 15px 2px var(--border-color);
+}
+
+.preferences__wrapper {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  top: 0;
+  right: calc(var(--sidebar-width) * -1);
+  width: var(--sidebar-width);
+  transition: 500ms;
+}
+
+.preferences__wrapper::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--btn-width);
+  height: 100%;
+  background-color: var(--background-darker-color);
+  border-left: 2px solid var(--border-color);
+  border-right: 2px solid var(--border-color);
+  box-sizing: border-box;
+}
+
+.modal--show .preferences__wrapper {
+  right: 0;
 }
 
 .preferences__container {
   display: flex;
-  position: fixed;
   justify-content: center;
   flex-direction: column;
-  top: 0;
-  right: -210px;
+  flex-grow: 0;
   height: 100vh;
-  width: 210px;
+  width: calc(var(--sidebar-width) - var(--btn-width));
+  margin-left: auto;
   background-color: var(--background-color);
   box-sizing: border-box;
   color: var(--font-color);
@@ -529,7 +562,7 @@
 
 .preferences__site-preferences {
   border: none;
-  margin: 60px 0 auto;
+  margin: var(--btn-width) 0 auto;
 }
 
 .preferences__skills {
@@ -729,7 +762,7 @@
   .about-me {
     width: 100%;
     grid-template-columns: 1fr;
-    grid-template-rows: 200px 150px 60px;
+    grid-template-rows: 200px 150px var(--btn-width);
     min-width: 320px;
     border-radius: 0;
     border-left: none;
@@ -781,19 +814,23 @@
   }
 
   .portfolio__preferences.modal--show {
+    width: 0;
+  }
+
+  .preferences__wrapper {
+    top: 0;
+    left: 100vw;
+    right: none;
+    width: 100vw;
+    transition: 500ms;
+  }
+
+  .modal--show .preferences__wrapper {
     left: 0;
   }
 
-  .preferences__btn.modal__toggle--toggled {
-    right: 0;
-    position: relative;
-    flex-shrink: 0;
-    transform: none;
-  }
-
   .preferences__container {
-    position: relative;
-    width: 100%;
+    width: calc(100vw - var(--btn-width));
     font-size: 1.5rem;
   }
 
@@ -824,7 +861,7 @@
   }
 
   .portfolio__projects-list {
-    width: calc(100% - 60px);
+    width: calc(100% - var(--btn-width));
   }
 
   .portfolio__projects-list .project__card {
@@ -856,8 +893,8 @@
   @media (max-width: 1350px) {
     .about-me {
       min-width: 590px;
-      grid-template-columns: 60px 1fr 60px 1fr 60px;
-      grid-template-rows: 1fr 1fr 60px;
+      grid-template-columns: 60px 1fr var(--btn-width) 1fr 60px;
+      grid-template-rows: 1fr 1fr var(--btn-width);
     }
 
     .about-me::before {
@@ -897,6 +934,10 @@
 
     .project__card {
       min-width: 260px;
+    }
+
+    .portfolio__preferences {
+      z-index: 41;
     }
   }
 }

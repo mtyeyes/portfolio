@@ -16,6 +16,8 @@
       --font-color: #202160;
       --main-color: #df6c4f;
       --error: #df4f4f;
+      --btn-width: 60px;
+      --sidebar-width: 270px;
     }
 
     .visually-hidden {
@@ -53,8 +55,8 @@
     .btn {
       position: fixed;
       padding: 0;
-      width: 60px;
-      height: 60px;
+      width: var(--btn-width);
+      height: var(--btn-width);
       border: none;
       border-radius: 100%;
       background-color: transparent;
@@ -69,8 +71,8 @@
       display: block;
       top: 0;
       left: 0;
-      width: 60px;
-      height: 60px;
+      width: var(--btn-width);
+      height: var(--btn-width);
       border: 2px solid var(--main-color);
       box-sizing: border-box;
       transition: all 200ms, transform 500ms ease-in;
@@ -165,7 +167,7 @@
     .loader {
       display: flex;
       justify-content: space-around;
-      width: 60px;
+      width: var(--btn-width);
     }
 
     .loader__circle {
@@ -355,48 +357,50 @@
       <span class="visually-hidden" data-lang-ru="Идет загрузка данных" data-lang-en="Loading">Идет загрузка данных</span>
     </div>
     <aside class="portfolio__preferences preferences modal modal__container">
-      <button class="preferences__btn btn modal__toggle mouse-stalker-hoverable">
-        <span class="visually-hidden" data-lang-ru="Допольнительные настройки" data-lang-en="Preferences">Допольнительные настройки</span>
-        <span class="btn-flip__wrapper btn-flip__wrapper--face">
-          <svg class="btn__icon">
-            <use xlink:href="#icon-preferences"></use>
-          </svg>
-        </span>
-        <span class="btn-flip__wrapper btn-flip__wrapper--back">
-          <svg class="btn__icon">
-            <use xlink:href="#icon-close"></use>
-          </svg>
-        </span>
-      </button>
-      <div class="preferences__container">
-        <fieldset class="preferences__site-preferences site-preferences">
-          <legend class="site-preferences__legend visually-hidden" data-lang-ru="Настройки сайта" data-lang-en="Site preferences">Настройки сайта</legend>
-          <ul class="site-preferences__list">
-            <li class="site-preferences__item">
-              <input class="site-preferences__checkbox site-preferences__checkbox--theme-switch visually-hidden" type="checkbox" name="theme-switch" id="theme-switcher" />
-              <label class="site-preferences__label site-preferences__label--theme-switch mouse-stalker-hoverable" for="theme-switcher" data-stalker-animated="true" data-stalker-radius="10px">
-                  <svg class="site-preferences__label-icon">
-                    <use xlink:href="#icon-light-theme"></use>
-                  </svg>
-                <span>/</span>
-                  <svg class="site-preferences__label-icon">
-                    <use xlink:href="#icon-dark-theme"></use>
-                  </svg>
-              </label>
-            </li>
-            <li class="site-preferences__item">
-              <input class="site-preferences__checkbox site-preferences__checkbox--language-change visually-hidden" type="checkbox" name="language-change" id="language-changer" />
-              <label class="site-preferences__label site-preferences__label--language-change mouse-stalker-hoverable" for="language-changer" data-stalker-animated="true" data-stalker-radius="10px">
-                <span>RU</span>
-                <span>/</span>
-                <span>EN</span>
-              </label>
-            </li>
-          </ul>
-        </fieldset>
-        <fieldset class="preferences__skills skills">
-          <legend class="skills__legend" data-lang-ru="Применяемые навыки:" data-lang-en="Skills">Применяемые навыки:</legend>
-        </fieldset>
+      <div class="preferences__wrapper">
+        <button class="preferences__btn btn modal__toggle mouse-stalker-hoverable">
+          <span class="visually-hidden" data-lang-ru="Допольнительные настройки" data-lang-en="Preferences">Допольнительные настройки</span>
+          <span class="btn-flip__wrapper btn-flip__wrapper--face">
+            <svg class="btn__icon">
+              <use xlink:href="#icon-preferences"></use>
+            </svg>
+          </span>
+          <span class="btn-flip__wrapper btn-flip__wrapper--back">
+            <svg class="btn__icon">
+              <use xlink:href="#icon-close"></use>
+            </svg>
+          </span>
+        </button>
+        <div class="preferences__container">
+          <fieldset class="preferences__site-preferences site-preferences">
+            <legend class="site-preferences__legend visually-hidden" data-lang-ru="Настройки сайта" data-lang-en="Site preferences">Настройки сайта</legend>
+            <ul class="site-preferences__list">
+              <li class="site-preferences__item">
+                <input class="site-preferences__checkbox site-preferences__checkbox--theme-switch visually-hidden" type="checkbox" name="theme-switch" id="theme-switcher" />
+                <label class="site-preferences__label site-preferences__label--theme-switch mouse-stalker-hoverable" for="theme-switcher" data-stalker-animated="true" data-stalker-radius="10px">
+                    <svg class="site-preferences__label-icon">
+                      <use xlink:href="#icon-light-theme"></use>
+                    </svg>
+                  <span>/</span>
+                    <svg class="site-preferences__label-icon">
+                      <use xlink:href="#icon-dark-theme"></use>
+                    </svg>
+                </label>
+              </li>
+              <li class="site-preferences__item">
+                <input class="site-preferences__checkbox site-preferences__checkbox--language-change visually-hidden" type="checkbox" name="language-change" id="language-changer" />
+                <label class="site-preferences__label site-preferences__label--language-change mouse-stalker-hoverable" for="language-changer" data-stalker-animated="true" data-stalker-radius="10px">
+                  <span>RU</span>
+                  <span>/</span>
+                  <span>EN</span>
+                </label>
+              </li>
+            </ul>
+          </fieldset>
+          <fieldset class="preferences__skills skills">
+            <legend class="skills__legend" data-lang-ru="Применяемые навыки:" data-lang-en="Skills">Применяемые навыки:</legend>
+          </fieldset>
+        </div>
       </div>
     </aside>
   </main>
