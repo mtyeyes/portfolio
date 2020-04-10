@@ -33,29 +33,30 @@ const common = {
       this.functionParametersArr = functionParametersArr;
       this.interval = interval;
       this.context = functionContext || this;
-    }
+    };
     invokeFunction() {
       this.functionToCall.apply(this.context, this.functionParametersArr);
-    }
+    };
     execute(functionParametersArr) {
       this.functionParametersArr = functionParametersArr;
       if (!this.isThrottled) {
         this.invokeFunction();
-        this.isThrottled = true;
-        this.timer = setTimeout(this.unthrottle.bind(this), this.interval);
+        this.throttle();
       } else {
         this.isEventFiredWhileThrottled = true;
-      }
-    }
-    unthrottle() {
-      if (!this.isEventFiredWhileThrottled) {
-        this.isThrottled = false;
-      } else {
-        this.invokeFunction();
-        this.isEventFiredWhileThrottled = false;
-        this.timer = setTimeout(this.unthrottle.bind(this), this.interval);
       };
-    }
+    };
+    throttle() {
+      this.isThrottled = true;
+      this.timer = setTimeout(this.unthrottle.bind(this), this.interval);
+    };
+    unthrottle() {
+      this.isThrottled = false;
+      if (this.isEventFiredWhileThrottled) {
+        this.isEventFiredWhileThrottled = false;
+        this.execute(this.functionParametersArr);
+      };
+    };
   }
 };
 
