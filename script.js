@@ -1,5 +1,5 @@
-//functions used in multiple "modules"
-//-----------------------------------
+//Functions and values used in multiple "modules"
+//-----------------------------------------------
 
 const common = {
   createNewElement: function (tagName, classesArr, attributeNameValuePairs, text) {
@@ -26,6 +26,7 @@ const common = {
     const uniqueValues = new Set(mergedArray);
     return uniqueValues;
   },
+  displayRefreshFrequency: 7, // 7ms ~ 144hz
   newElementInsertedInDomEvent: new CustomEvent ('elementinserted', {bubbles: true}),
   Throttle: class {
     constructor(functionName, functionParametersArr, interval, functionContext) {
@@ -60,7 +61,7 @@ const common = {
   }
 };
 
-//creating the projects cards and setting up the filter in preferences menu
+//Creating the projects cards and setting up the filter in preferences menu
 //-------------------------------------------------------------------------
 
 (async function() {
@@ -143,7 +144,7 @@ const common = {
   class SkillsItem {
     constructor(technology) {
       this.checkbox = common.createNewElement('input', ['skills__skill-checkbox', 'visually-hidden'], {'type': 'checkbox', 'name': `${technology}`, 'id': technology, 'checked': 'true'});
-      this.label = common.createNewElement('label', ['skills__skill-label', 'mouse-stalker-hoverable'], {'for': technology, 'data-stalker-radius': '10px', 'data-salker-animated': 'true'}, technology);
+      this.label = common.createNewElement('label', ['skills__skill-label', 'mouse-stalker-hoverable'], {'for': technology, 'data-stalker-radius': '10px', 'data-stalker-animation-duration': '500'}, technology);
       this.container = common.createNewElement('li', ['skills__skill-container']);
       this.container.append(this.checkbox);
       this.container.append(this.label);
@@ -273,56 +274,75 @@ const common = {
   const mouseStalker = {
     stalker: common.createNewElement('div', ['mouse-stalker']),
     isSticked: false,
+    create: function () {
+      const hoverableElements = document.querySelectorAll('.mouse-stalker-hoverable');
+      document.body.append(mouseStalker.stalker);
+      mouseStalker.adjust(event);
+      mouseStalker.throttledAdjust = new common.Throttle(mouseStalker.adjust, [event], common.displayRefreshFrequency, mouseStalker);
+      document.addEventListener('mousemove', function (event) {
+        mouseStalker.throttledAdjust.execute([event]);
+      });
+      hoverableElements.forEach(element => {
+        mouseStalker.addListenersToHoverTarget(element);
+      });
+      document.addEventListener('elementinserted', function (event) {
+        const hoverableElements = event.target.querySelectorAll('.mouse-stalker-hoverable');
+        hoverableElements.forEach(element => {
+          mouseStalker.addListenersToHoverTarget(element);
+        })
+      });
+      document.removeEventListener('mousemove', mouseStalker.create);
+    },
     setPosition: function (xPos, yPos) {
       this.stalker.style.setProperty('transform', `translate(${xPos}px,${yPos}px)`);
     },
     adjust: function (event) {
       if (this.isSticked) {
-        const dimensions = this.getHoverTargetDimensions();
-        yPos = dimensions['y'] - dimensions['height'] * 0.1;
-        xPos = dimensions['x'] - dimensions['width'] * 0.1;
+        yPos = this.hoverTargetDimensions['y'] - this.hoverTargetDimensions['height'] * 0.1;
+        xPos = this.hoverTargetDimensions['x'] - this.hoverTargetDimensions['width'] * 0.1;
       } else {
         yPos = event.clientY - (this.stalker.offsetHeight * 0.5);
         xPos = event.clientX - (this.stalker.offsetWidth * 0.5);
       }
       this.setPosition(xPos, yPos);
     },
-    adjustAfterTransition: function(element) {
-      const context = this;
-      let i = 0;
-      const followStickedElement = () => {
-        if (context.hoverTarget === element && context.isSticked === true && i < 10) {
-          context.updateStalkerDimensions();
-          context.adjust();
-          i++;
-          setTimeout(followStickedElement, 35);
-        };
-      }
-      setTimeout(followStickedElement, 35);
-    },
     stickToElement: function (element) {
       this.isSticked = true;
-      if(element.dataset.salkerTargetInside) {
-        this.hoverTarget = element.querySelector(`.${element.dataset.salkerTargetInside}`);
+      if(element.dataset.stalkerTargetInside) {
+        this.hoverTarget = element.querySelector(`.${element.dataset.stalkerTargetInside}`);
       } else {
         this.hoverTarget = element;
       };
-      if(element.dataset.stalkerAnimated) {this.adjustAfterTransition(this.hoverTarget)} else {this.updateStalkerDimensions()};
       if(element.dataset.stalkerRadius) {this.stalker.style.setProperty('border-radius', element.dataset.stalkerRadius)};
+      if(element.dataset.stalkerAnimationDuration) {this.adjustAfterTransition(this.hoverTarget, element.dataset.stalkerAnimationDuration)} else {this.updateStalkerDimensions()};
     },
     unstick: function (event) {
       this.isSticked = false;
       this.stalker.style.width = null;
       this.stalker.style.height = null;
+      this.timerIfTargetMoving = null;
       this.stalker.style.removeProperty('border-radius');
     },
-    getHoverTargetDimensions: function() {
-      return this.hoverTarget.getClientRects()[0];
+    adjustAfterTransition: function(element, speed) {
+      const context = this;
+      let i = speed / common.displayRefreshFrequency;
+      const followStickedElement = () => {
+        if (context.hoverTarget === element && context.isSticked === true && i > 0) {
+          context.updateStalkerDimensions();
+          context.adjust();
+          i--;
+          setTimeout(followStickedElement, common.displayRefreshFrequency);
+        };
+      }
+      setTimeout(followStickedElement, common.displayRefreshFrequency);
+    },
+    updateHoverTargetDimensions: function() {
+      this.hoverTargetDimensions = this.hoverTarget.getClientRects()[0];
     },
     updateStalkerDimensions: function() {
-      const dimensions = this.getHoverTargetDimensions();
-      stalkerWidth = dimensions['width'] * 1.2;
-      stalkerHeight = dimensions['height'] * 1.2;
+      this.updateHoverTargetDimensions();
+      const stalkerWidth = this.hoverTargetDimensions['width'] * 1.2;
+      const stalkerHeight = this.hoverTargetDimensions['height'] * 1.2;
       this.setDimensions(stalkerWidth, stalkerHeight);
     },
     setDimensions: function (stalkerWidth, stalkerHeight) {
@@ -337,29 +357,9 @@ const common = {
         mouseStalker.unstick();
       });
     }
-  }
+  };
 
-  const createMouseStalker = (event) => {
-    document.body.append(mouseStalker.stalker);
-    mouseStalker.adjust(event);
-    const hoverableElements = document.querySelectorAll('.mouse-stalker-hoverable');
-    const throttledMouseStalker = new common.Throttle(mouseStalker.adjust, [event], 7, mouseStalker);
-    document.removeEventListener('mousemove', createMouseStalker);
-    document.addEventListener('mousemove', function (event) {
-      throttledMouseStalker.execute([event]);
-    });
-    hoverableElements.forEach(element => {
-      mouseStalker.addListenersToHoverTarget(element);
-    });
-    document.addEventListener('elementinserted', function (event) {
-      const hoverableElements = event.target.querySelectorAll('.mouse-stalker-hoverable');
-      hoverableElements.forEach(element => {
-        mouseStalker.addListenersToHoverTarget(element);
-      })
-    });
-  }
-
-  if(!('ontouchstart' in window)) {document.addEventListener('mousemove', createMouseStalker)};
+  if(!('ontouchstart' in window)) {document.addEventListener('mousemove', mouseStalker.create)};
 })();
 
 // Adjust btns position on mouse move to stay on the same axis with mouse
@@ -400,7 +400,7 @@ const common = {
   };
 
   if(!('ontouchstart' in window)) {
-    const throttledBtnsStickToMouse = new common.Throttle(btnsStickToMouse.adjustBtns, [event], 7, btnsStickToMouse);
+    const throttledBtnsStickToMouse = new common.Throttle(btnsStickToMouse.adjustBtns, [event], common.displayRefreshFrequency, btnsStickToMouse);
     btnsStickToMouse.getDimensions();
 
     window.addEventListener('resize', function (event) {
@@ -413,7 +413,7 @@ const common = {
   }
 })();
 
-//show/hide modal containers
+//Show/hide modal containers
 //--------------------------
 
 (function() {
@@ -428,7 +428,7 @@ const common = {
   });
 })();
 
-//show foldable description on hover/focus
+//Show foldable description on hover/focus
 //----------------------------------------
 
 (function() {
@@ -451,7 +451,7 @@ const common = {
       this.container = element;
       this.fullText = element.dataset.unfoldContent;
       this.foldableTextContainer = common.createNewElement('span', ['contacts__unfoldableText']);
-      this.animationSpeed = common.getValueOfProperty(element, 'transition-duration').replace('s', '') * 750;
+      this.animationSpeed = common.getValueOfProperty(element, 'transition-duration').replace('s', '') * 1000;
       this.paintingSpeed = Math.floor(this.animationSpeed / this.fullText.length);
       this.container.querySelector('.contacts__link').append(this.foldableTextContainer);
       this.list = list;
@@ -501,7 +501,7 @@ const common = {
 
 })();
 
-//change language
+//Change language
 //---------------
 
 (function() {
@@ -547,7 +547,7 @@ document.addEventListener('elementinserted', function (event) {
 });
 })();
 
-//safari z-index bug workaround
+//Safari z-index bug workaround
 //-----------------------------
 
 document.addEventListener('elementinserted', function (event) {

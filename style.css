@@ -48,14 +48,6 @@
   outline: none;
 }
 
-.modal__toggle--toggled .btn-flip__wrapper--face {
-  opacity: 0;
-}
-
-.modal__toggle--toggled .btn-flip__wrapper--back {
-  opacity: 1;
-}
-
 .about-me__btn.modal__toggle--toggled .btn-flip__wrapper--face {
   transform: rotateX(180deg);
 }
@@ -93,6 +85,7 @@
   height: var(--btn-width);
   width: 60vw;
   transform: translateX(calc(-50% + (var(--btn-width) / 2)));
+  border-radius: 0 0 23px 23px;
 }
 
 .preferences__btn.modal__toggle--toggled {
@@ -109,7 +102,7 @@
   left: 0;
   top: calc(-50vh + 50%);
   width: 100%;
-  height: 200vh;
+  height: 100vh;
 }
 
 .about-me {
@@ -781,6 +774,7 @@
 
   .about-me__btn.modal__toggle--toggled::before {
     width: 100vw;
+    border-radius: 0;
   }
 
   .about-me__wrapper {
