@@ -298,8 +298,9 @@ const common = {
     },
     adjust: function (event) {
       if (this.isSticked) {
-        yPos = this.hoverTargetDimensions['y'] - this.hoverTargetDimensions['height'] * 0.1;
-        xPos = this.hoverTargetDimensions['x'] - this.hoverTargetDimensions['width'] * 0.1;
+        const dimensions = this.hoverTarget.getClientRects()[0];
+        yPos = dimensions['y'] - dimensions['height'] * 0.1;
+        xPos = dimensions['x'] - dimensions['width'] * 0.1;
       } else {
         yPos = event.clientY - (this.stalker.offsetHeight * 0.5);
         xPos = event.clientX - (this.stalker.offsetWidth * 0.5);
@@ -336,13 +337,10 @@ const common = {
       }
       setTimeout(followStickedElement, common.displayRefreshFrequency);
     },
-    updateHoverTargetDimensions: function() {
-      this.hoverTargetDimensions = this.hoverTarget.getClientRects()[0];
-    },
     updateStalkerDimensions: function() {
-      this.updateHoverTargetDimensions();
-      const stalkerWidth = this.hoverTargetDimensions['width'] * 1.2;
-      const stalkerHeight = this.hoverTargetDimensions['height'] * 1.2;
+      const dimensions = this.hoverTarget.getClientRects()[0];
+      const stalkerWidth = dimensions['width'] * 1.2;
+      const stalkerHeight = dimensions['height'] * 1.2;
       this.setDimensions(stalkerWidth, stalkerHeight);
     },
     setDimensions: function (stalkerWidth, stalkerHeight) {
