@@ -206,7 +206,7 @@ const common = {
       (containsSelectedSkills) ? card['cardContainer'].classList.remove('project__card--hide'): card['cardContainer'].classList.add('project__card--hide');
     });
     clearTimeout(refreshProjectsListTimeout);
-    projectsList.classList.remove('portfolio__projects-list--updating');
+    setTimeout(function() {projectsList.classList.remove('portfolio__projects-list--updating')}, 300);
   };
 
   (function() {
@@ -572,77 +572,36 @@ document.addEventListener('elementinserted', function (event) {
     let fetchFile = await fetch(relativePath);
     let fileAsText = await fetchFile.text();
     return fileAsText;
-  }
-
-  const prepareScriptForDemonstration = (script) => {
-    const minifyScript = (str) => {
-      const regexForComments = /\/\/.+/g;
-      const regexForNewlinesAndWhitespaces = /\n|\s/g;
-      return str.replace(regexForComments, '').replace(regexForNewlinesAndWhitespaces, '');
-    }
-    const replaceHtmlReservedSymbols = (str) => {
-      const regexForReservedSymbols = /&|<|>/g;
-      const replaceSymbols = (match) => {
-        switch (match) {
-          case '&': return '&amp;';
-          case '<': return '&lt;';
-          case '>': return '&gt;';
-        };
+  };
+  const processScriptThroughWorker = async (script) => {
+    const worker = new Worker('worker.js');
+    worker.postMessage(script);
+    let scriptReadyForInsertion = new Promise(resolve => {
+      worker.onmessage = (message) => {
+        resolve(message.data);
       };
-      return str.replace(regexForReservedSymbols, replaceSymbols);
-    };
-    const highlightMethods = (str) => {
-      const regexForMethods = /\.{1}[a-zA-Z]+/g;
-      const isQuerySelectorParameter = (offset, string) => {
-        return string[(offset -1)] === '\'';
-      };
-      const isFileExtension = (match) => {
-        fileExtensions = ['html', 'css', 'js', 'json', 'jpg', 'svg', 'ico'];
-        let result = false;
-        fileExtensions.forEach(extension => {
-          if(`.${extension}` === match) {result = true};
-        });
-        return result;
-      }
-      const encaseMethodsInSpan = (match, offset, string) => {
-        if(isQuerySelectorParameter(offset, string)) {return match};
-        if(isFileExtension(match)) {return match};
-        return `<span class="code-as-background--highlight">${match}</span>`;
-      };
-      return str.replace(regexForMethods, encaseMethodsInSpan);
-    }
-
-    const minifiedScript = minifyScript(script);
-    const htmlNeutralCode = replaceHtmlReservedSymbols(minifiedScript);
-    return highlightMethods(htmlNeutralCode);
-  }
-
-  const scriptToBackgroundIfDeviceFastEnough = async () => {
-    if(event.target.classList.contains('portfolio__projects-list')) {
-      document.removeEventListener('elementinserted', scriptToBackgroundIfDeviceFastEnough);
-      const cardsLoaded = new Date();
-      if(cardsLoaded - scriptExecuted < 300) {
-        const parent = document.querySelector('.portfolio')
-        const codeContainer = common.createNewElement('code', ['code-as-background']);
-        const wrapper = common.createNewElement('div', ['code-as-background__wrapper']);
-        const adjustCodeBackgroundHeight = () => {
-          const remToPixels = (int) =>{return getComputedStyle(document.documentElement).fontSize.replace('px', '') * int};
-          wrapper.style.height = `${parent.offsetHeight}px`;
-          if(codeContainer.offsetHeight < parent.offsetHeight + remToPixels(18)) {
-            codeContainer.innerHTML = `${codeContainer.innerHTML}${codeContainer.innerHTML}`;
-            adjustCodeBackgroundHeight();
-          };
-        };
-        let script = await fetchFileAsText('script.js');
-        codeContainer.innerHTML = prepareScriptForDemonstration(script);
-        wrapper.append(codeContainer);
-        parent.append(wrapper);
+    });
+    return scriptReadyForInsertion;
+  };
+  const displayScriptAsBackground = async (relativePath) => {
+    const parent = document.querySelector('.portfolio')
+    const codeContainer = common.createNewElement('code', ['code-as-background']);
+    const wrapper = common.createNewElement('div', ['code-as-background__wrapper']);
+    const adjustCodeBackgroundHeight = () => {
+      const remToPixels = (int) =>{return getComputedStyle(document.documentElement).fontSize.replace('px', '') * int};
+      wrapper.style.height = `${parent.offsetHeight}px`;
+      if(codeContainer.offsetHeight < parent.offsetHeight + remToPixels(18)) {
+        codeContainer.innerHTML = `${codeContainer.innerHTML}${codeContainer.innerHTML}`;
         adjustCodeBackgroundHeight();
-        parent.addEventListener('transitionend', adjustCodeBackgroundHeight);
       };
     };
+    let script = await fetchFileAsText(relativePath);
+    codeContainer.innerHTML = await processScriptThroughWorker(script);
+    wrapper.append(codeContainer);
+    parent.append(wrapper);
+    adjustCodeBackgroundHeight();
+    parent.addEventListener('transitionend', adjustCodeBackgroundHeight);
   };
 
-  const scriptExecuted = new Date();
-  document.addEventListener('elementinserted', scriptToBackgroundIfDeviceFastEnough);
+  displayScriptAsBackground('script.js');
 })();

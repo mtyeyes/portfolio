@@ -289,7 +289,7 @@
   height: auto;
   min-height: 85vh;
   margin: 0 auto;
-  padding: 10vh 0 5vh;
+  padding: 10vh 5vw 5vh;
   list-style: none;
   transition: 1s;
 }
@@ -301,9 +301,8 @@
 .project__card {
   position: relative;
   display: flex;
-  width: 46%;
+  width: 44%;
   height: 18vw;
-  margin-bottom: 3vw;
   margin-left: auto;
   margin-right: auto;
   flex-grow: 0;
@@ -317,11 +316,11 @@
 }
 
 .project__card:nth-child(even) {
-  margin-top: 1vw;
+  margin-top: 2vw;
 }
 
 .project__card:nth-child(odd) {
-  margin-bottom: 1vw;
+  margin-bottom: 2vw;
 }
 
 .project__card:last-child {
@@ -332,10 +331,6 @@
 .project__card:focus-within {
   box-shadow: -5px 5px 8px 5px var(--box-shadow-color);
   transform: none;
-}
-
-.project__card--hide {
-  display: none;
 }
 
 .project__thumbnail {
@@ -969,4 +964,13 @@
       min-width: 350px;
     }
   }
+}
+
+.project__card--hide {
+  width: 0;
+  height: 0;
+  min-width: 0;
+  min-height: 0;
+  margin: 0;
+  box-shadow: 0 0 0 0 transparent;
 }
