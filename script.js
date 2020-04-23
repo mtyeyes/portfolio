@@ -86,7 +86,7 @@ const common = {
         this.thumbnail = common.createNewElement('img', ['project__thumbnail', 'project__thumbnail--img'], {'src': `resources/${obj['title']}.jpg`, 'alt': `${obj['title']} thumbnail`});
       }
       this.skills = obj['skills'];
-      this.suportedBrowsers = function() {
+      this.supportedBrowsers = function() {
         const list = common.createNewElement('ul', ['project__browser-support-list']);
         browsers.forEach( browser => {
           const listItem = common.createNewElement('li', ['project__browser-support', `project__browser-support--${browser}`]);
@@ -103,7 +103,7 @@ const common = {
       this.descriptionWrapper.append(this.description);
       this.cardContainer.append(this.thumbnail);
       this.cardContainer.append(this.link);
-      this.cardContainer.append(this.suportedBrowsers());
+      this.cardContainer.append(this.supportedBrowsers());
       this.cardContainer.append(this.descriptionWrapper);
     };
     createLink(obj) {
