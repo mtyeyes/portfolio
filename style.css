@@ -303,8 +303,7 @@
   display: flex;
   width: 44%;
   height: 18vw;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 1vw auto;
   flex-grow: 0;
   min-width: 300px;
   min-height: 300px;
