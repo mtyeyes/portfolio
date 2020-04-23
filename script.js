@@ -229,21 +229,23 @@ const common = {
   const mapThemesStyles = {
     ' light': {
       '--theme': ' light',
-      '--background-color': '#f4f7f6',
-      '--background-darker-color': '#dbdfe4',
-      '--border-color': '#c8cdd7',
-      '--font-color': '#202160',
-      '--main-color': '#df6c4f',
-      '--error': '#df4f4f',
+      '--background-color': 'rgb(244, 247, 246)',
+      '--background-darker-color': 'rgb(210, 210, 216)',
+      '--border-color': 'rgb(200, 205, 215)',
+      '--box-shadow-color': 'rgba(150, 155, 165, 0.3)',
+      '--font-color': 'rgb(32, 33, 96)',
+      '--main-color': 'rgb(223, 108, 79)',
+      '--error': 'rgb(223, 79, 79)',
     },
     ' dark': {
       '--theme': ' dark',
-      '--background-color': '#282C34',
-      '--background-darker-color': '#21252B',
-      '--border-color': '#1D1F23',
-      '--font-color': '#ABB2BF',
-      '--main-color': '#D19A66',
-      '--error': '#e06c75',
+      '--background-color': 'rgb(40, 44, 52)',
+      '--background-darker-color': 'rgb(33, 37, 43)',
+      '--border-color': 'rgb(29, 31, 35)',
+      '--box-shadow-color': 'rgba(19, 21, 25, 0.3)',
+      '--font-color': 'rgb(171, 178, 191)',
+      '--main-color': 'rgb(209, 154, 102)',
+      '--error': 'rgb(224, 108, 117)',
     }
   };
 
@@ -561,3 +563,86 @@ document.addEventListener('elementinserted', function (event) {
     });
   };
 });
+
+//Add this script as a skewed background text
+//-------------------------------------------
+
+(function() {
+  const fetchFileAsText = async (relativePath) => {
+    let fetchFile = await fetch(relativePath);
+    let fileAsText = await fetchFile.text();
+    return fileAsText;
+  }
+
+  const prepareScriptForDemonstration = (script) => {
+    const minifyScript = (str) => {
+      const regexForComments = /\/\/.+/g;
+      const regexForNewlinesAndWhitespaces = /\n|\s/g;
+      return str.replace(regexForComments, '').replace(regexForNewlinesAndWhitespaces, '');
+    }
+    const replaceHtmlReservedSymbols = (str) => {
+      const regexForReservedSymbols = /&|<|>/g;
+      const replaceSymbols = (match) => {
+        switch (match) {
+          case '&': return '&amp;';
+          case '<': return '&lt;';
+          case '>': return '&gt;';
+        };
+      };
+      return str.replace(regexForReservedSymbols, replaceSymbols);
+    };
+    const highlightMethods = (str) => {
+      const regexForMethods = /\.{1}[a-zA-Z]+/g;
+      const isQuerySelectorParameter = (offset, string) => {
+        return string[(offset -1)] === '\'';
+      };
+      const isFileExtension = (match) => {
+        fileExtensions = ['html', 'css', 'js', 'json', 'jpg', 'svg', 'ico'];
+        let result = false;
+        fileExtensions.forEach(extension => {
+          if(`.${extension}` === match) {result = true};
+        });
+        return result;
+      }
+      const encaseMethodsInSpan = (match, offset, string) => {
+        if(isQuerySelectorParameter(offset, string)) {return match};
+        if(isFileExtension(match)) {return match};
+        return `<span class="code-as-background--highlight">${match}</span>`;
+      };
+      return str.replace(regexForMethods, encaseMethodsInSpan);
+    }
+
+    const minifiedScript = minifyScript(script);
+    const htmlNeutralCode = replaceHtmlReservedSymbols(minifiedScript);
+    return highlightMethods(htmlNeutralCode);
+  }
+
+  const scriptToBackgroundIfDeviceFastEnough = async () => {
+    if(event.target.classList.contains('portfolio__projects-list')) {
+      document.removeEventListener('elementinserted', scriptToBackgroundIfDeviceFastEnough);
+      const cardsLoaded = new Date();
+      if(cardsLoaded - scriptExecuted < 300) {
+        const parent = document.querySelector('.portfolio')
+        const codeContainer = common.createNewElement('code', ['code-as-background']);
+        const wrapper = common.createNewElement('div', ['code-as-background__wrapper']);
+        const adjustCodeBackgroundHeight = () => {
+          const remToPixels = (int) =>{return getComputedStyle(document.documentElement).fontSize.replace('px', '') * int};
+          wrapper.style.height = `${parent.offsetHeight}px`;
+          if(codeContainer.offsetHeight < parent.offsetHeight + remToPixels(18)) {
+            codeContainer.innerHTML = `${codeContainer.innerHTML}${codeContainer.innerHTML}`;
+            adjustCodeBackgroundHeight();
+          };
+        };
+        let script = await fetchFileAsText('script.js');
+        codeContainer.innerHTML = prepareScriptForDemonstration(script);
+        wrapper.append(codeContainer);
+        parent.append(wrapper);
+        adjustCodeBackgroundHeight();
+        parent.addEventListener('transitionend', adjustCodeBackgroundHeight);
+      };
+    };
+  };
+
+  const scriptExecuted = new Date();
+  document.addEventListener('elementinserted', scriptToBackgroundIfDeviceFastEnough);
+})();
