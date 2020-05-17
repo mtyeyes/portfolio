@@ -21,21 +21,12 @@ const prepareScriptForDemonstration = (script) => {
     return str.replace(regexForReservedSymbols, replaceSymbols);
   };
   const highlightMethods = (str) => {
-    const regexForMethods = /\.{1}[a-zA-Z]+/g;
+    const regexForMethods = /\.{1}(?!html|css|js|json|jpg|svg|ico)[a-zA-Z]+/g;
     const isQuerySelectorParameter = (offset, string) => {
       return string[(offset -1)] === '\'';
     };
-    const isFileExtension = (match) => {
-      fileExtensions = ['html', 'css', 'js', 'json', 'jpg', 'svg', 'ico'];
-      let result = false;
-      fileExtensions.forEach(extension => {
-        if(`.${extension}` === match) {result = true};
-      });
-      return result;
-    };
     const encaseMethodsInSpan = (match, offset, string) => {
-      if(isQuerySelectorParameter(offset, string)) {return match};
-      if(isFileExtension(match)) {return match};
+      if(isQuerySelectorParameter(offset, string)) {return match}; //this would be replaced with (?<!\') as soon as most browsers would implement lookbehind
       return `<span class="code-as-background--highlight">${match}</span>`;
     };
     return str.replace(regexForMethods, encaseMethodsInSpan);
