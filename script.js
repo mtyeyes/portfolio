@@ -579,6 +579,7 @@ document.addEventListener('elementinserted', function (event) {
     let scriptReadyForInsertion = new Promise(resolve => {
       worker.onmessage = (message) => {
         resolve(message.data);
+        worker.terminate();
       };
     });
     return scriptReadyForInsertion;
