@@ -116,10 +116,9 @@ const common = {
     };
     createPortal(obj) {
       const portal = common.createNewElement('portal', ['project__thumbnail', 'project__thumbnail--portal'], {'src': obj['link']});
-      const context = this;
-      this.link.addEventListener('click', function(event) {
+      this.link.addEventListener('click', (event) => {
         event.preventDefault();
-        context.travelThroughPortal(event);
+        this.travelThroughPortal(event);
       });
       return portal;
     };
