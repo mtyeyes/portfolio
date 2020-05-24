@@ -679,6 +679,7 @@ document.addEventListener('elementinserted', function (event) {
     wrapper.append(codeContainer);
     adjustCodeBackgroundHeight();
     parent.addEventListener('transitionend', adjustCodeBackgroundHeight);
+    document.addEventListener('elementinserted', adjustCodeBackgroundHeight);
   };
 
   displayScriptAsBackground('script.js');
