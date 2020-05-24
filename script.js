@@ -2,18 +2,15 @@
 //-----------------------------------------------
 
 const common = {
-  createNewElement: function (tagName, classesArr, attributeNameValuePairs, text) {
+  createNewElement: function ({tagName = 'div', parent, classesArr, attributeNameValuePairs, text}) {
     const newElement = document.createElement(tagName);
-    if (classesArr) {
-      classesArr.forEach(className => newElement.classList.add(className))
-    };
+    if (parent) {parent.append(newElement)};
+    if (classesArr) {classesArr.forEach(className => newElement.classList.add(className))};
+    if (text) {newElement.textContent = text};
     if (attributeNameValuePairs) {
       Object.entries(attributeNameValuePairs).forEach(([attributeName, value]) => {
         newElement.setAttribute(attributeName, value);
       })
-    };
-    if (text) {
-      newElement.textContent = text
     };
     return newElement;
   },
@@ -26,7 +23,7 @@ const common = {
     const uniqueValues = new Set(mergedArray);
     return uniqueValues;
   },
-  displayRefreshFrequency: 7, // 7ms ~ 144hz
+  displayRefreshFrequency: 8, // 8ms ~ 120hz
   newElementInsertedInDomEvent: new CustomEvent ('elementinserted', {bubbles: true}),
   Throttle: class {
     constructor(functionName, functionParametersArr, interval, functionContext) {
@@ -79,49 +76,97 @@ const common = {
 
   class ProjectCard {
     constructor(obj) {
+      this.container = common.createNewElement({
+        tagName: 'li',
+        classesArr: ['project__card'],
+      });
       this.link = this.createLink(obj);
-      if ('HTMLPortalElement' in window) {
-        this.thumbnail = this.createPortal(obj);
-      } else {
-        this.thumbnail = common.createNewElement('img', ['project__thumbnail', 'project__thumbnail--img'], {'src': `resources/${obj['title']}.jpg`, 'alt': `${obj['title']} thumbnail`});
-      }
+      this.thumbnail = this.createThumbnail(obj);
+      this.supportedBrowsersTab = this.createSupportedBrowsersTab(obj);
+      this.descriptionTab = this.createDescriptionTab(obj);
       this.skills = obj['skills'];
-      this.supportedBrowsers = function() {
-        const list = common.createNewElement('ul', ['project__browser-support-list']);
-        browsers.forEach( browser => {
-          const listItem = common.createNewElement('li', ['project__browser-support', `project__browser-support--${browser}`]);
-          const svgIcon = createSvgUseElement(`#icon-browser-${browser}`);
-          listItem.append(svgIcon);
-          if (!obj['supportedBrowsers'].includes(browser)) {listItem.classList.add('project__browser-support--not-supported')}
-          list.append(listItem);
-        });
-        return list;
-      };
-      this.description = common.createNewElement('p', ['project__description'], {'data-lang-ru': obj['description'], 'data-lang-en': obj['data-lang-en']}, obj['description']);
-      this.descriptionWrapper = common.createNewElement('div', ['project__description-wrapper']);
-      this.cardContainer = common.createNewElement('li', ['project__card']);
-      this.descriptionWrapper.append(this.description);
-      this.cardContainer.append(this.thumbnail);
-      this.cardContainer.append(this.link);
-      this.cardContainer.append(this.supportedBrowsers());
-      this.cardContainer.append(this.descriptionWrapper);
     };
     createLink(obj) {
-      const link = common.createNewElement('a', ['project__link', 'mouse-stalker-hoverable'], {'href': obj['link'], 'target': '_blank', 'aria-label': obj['title']});
-      const linkCaption = common.createNewElement('span', ['project__link-caption', 'visually-hidden'], '', obj['title']);
-      const arrowIcon = createSvgUseElement('#icon-link', ['project__link-svg']);
-      link.append(linkCaption);
-      link.append(arrowIcon);
+      const link = common.createNewElement({
+        tagName: 'a',
+        parent: this.container,
+        classesArr: ['project__link', 'mouse-stalker-hoverable'],
+        attributeNameValuePairs: {'href': obj['link'], 'target': '_blank', 'aria-label': obj['title']},
+      });
+      const linkCaption = common.createNewElement({
+        tagName: 'span',
+        parent: link,
+        classesArr: ['project__link-caption', 'visually-hidden'],
+        text: obj['title'],
+      });
+      const arrowIcon = createSvgUseElement({
+        svgIconName: '#icon-link',
+        parent: link,
+        classesArr: ['project__link-svg'],
+      });
       return link;
     };
+    createThumbnail(obj) {
+      let thumbnail;
+      if ('HTMLPortalElement' in window) {
+        thumbnail = this.createPortal(obj);
+      } else {
+        thumbnail = common.createNewElement({
+          tagName: 'img',
+          parent: this.container,
+          classesArr: ['project__thumbnail', 'project__thumbnail--img'],
+          attributeNameValuePairs: {'src': `resources/${obj['title']}.jpg`, 'alt': `${obj['title']} thumbnail`}
+        });
+      };
+      return thumbnail;
+    };
     createPortal(obj) {
-      const portal = common.createNewElement('portal', ['project__thumbnail', 'project__thumbnail--portal'], {'src': obj['link']});
+      const portal = common.createNewElement({
+        tagName: 'portal',
+        parent: this.container,
+        classesArr: ['project__thumbnail', 'project__thumbnail--portal'],
+        attributeNameValuePairs: {'src': obj['link']},
+      });
       this.link.addEventListener('click', (event) => {
         event.preventDefault();
         this.travelThroughPortal(event);
       });
       return portal;
     };
+    createSupportedBrowsersTab(obj) {
+      const list = common.createNewElement({
+        tagName: 'ul',
+        parent: this.container,
+        classesArr: ['project__browser-support-list'],
+      });
+      browsers.forEach( browser => {
+        const listItem = common.createNewElement({
+          tagName: 'li',
+          parent: list,
+          classesArr: ['project__browser-support', `project__browser-support--${browser}`],
+        });
+        const svgIcon = createSvgUseElement({
+          svgIconName: `#icon-browser-${browser}`,
+          parent: listItem,
+        });
+        if (!obj['supportedBrowsers'].includes(browser)) {listItem.classList.add('project__browser-support--not-supported')}
+      });
+      return list;
+    };
+    createDescriptionTab(obj) {
+      const descriptionWrapper = common.createNewElement({
+        parent: this.container,
+        classesArr: ['project__description-wrapper'],
+      });
+      const description = common.createNewElement({
+        tagName: 'p',
+        parent: descriptionWrapper,
+        classesArr: ['project__description'],
+        attributeNameValuePairs: {'data-lang-ru': obj['description'], 'data-lang-en': obj['data-lang-en']},
+        text: obj['description'],
+      });
+      return descriptionWrapper;
+    }
     travelThroughPortal() {
       const portalContainer = event.currentTarget.parentElement;
       const portal = this.thumbnail;
@@ -142,35 +187,54 @@ const common = {
 
   class SkillsItem {
     constructor(technology) {
-      this.checkbox = common.createNewElement('input', ['skills__skill-checkbox', 'visually-hidden'], {'type': 'checkbox', 'name': `${technology}`, 'id': technology, 'checked': 'true'});
-      this.label = common.createNewElement('label', ['skills__skill-label', 'mouse-stalker-hoverable'], {'for': technology, 'data-stalker-radius': '10px', 'data-stalker-animation-duration': '500'}, technology);
-      this.container = common.createNewElement('li', ['skills__skill-container']);
-      this.container.append(this.checkbox);
-      this.container.append(this.label);
+      this.container = common.createNewElement({
+        tagName: 'li',
+        classesArr: ['skills__skill-container'],
+      });
+      this.checkbox = common.createNewElement({
+        tagName: 'input',
+        parent: this.container,
+        classesArr: ['skills__skill-checkbox', 'visually-hidden'],
+        attributeNameValuePairs: {'type': 'checkbox', 'name': `${technology}`, 'id': technology, 'checked': 'true'},
+      });
+      this.label = common.createNewElement({
+        tagName: 'label',
+        parent: this.container,
+        classesArr: ['skills__skill-label', 'mouse-stalker-hoverable'],
+        attributeNameValuePairs: {'for': technology, 'data-stalker-radius': '10px', 'data-stalker-animation-duration': '500'},
+        text: technology,
+      });
     }
   };
 
-  const createSvgUseElement = (svgIconName, classesArr) => {
+  const createSvgUseElement = ({svgIconName, parent, classesArr}) => {
     const svgContainer = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     const svgUse = document.createElementNS('http://www.w3.org/2000/svg', 'use');
     svgUse.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', svgIconName);
-    if(classesArr) {classesArr.forEach(className => svgContainer.classList.add(className))};
     svgContainer.append(svgUse);
+    if(classesArr) {classesArr.forEach(className => svgContainer.classList.add(className))};
+    if (parent) {parent.append(svgContainer)};
     return svgContainer
   }
 
   const createAndFillProjectsList = (source) => {
-    const projectsList = common.createNewElement('ul', ['portfolio__projects-list']);
+    const projectsList = common.createNewElement({
+      tagName: 'ul',
+      classesArr: ['portfolio__projects-list'],
+    });
     for (let project in source) {
       const projectCard = new ProjectCard(projectsData[project]);
       cards.push(projectCard);
-      projectsList.append(projectCard['cardContainer']);
+      projectsList.append(projectCard['container']);
     }
     return projectsList
   };
 
   const fillUsedTechnologiesSelectors = (source, projectsList) => {
-    skillsList = common.createNewElement('ul', ['skills__list']);
+    skillsList = common.createNewElement({
+      tagName: 'ul',
+      classesArr: ['skills__list'],
+    });
     let skills = [];
     for (let obj in source) {
       skills.push(source[obj]['skills']);
@@ -202,7 +266,7 @@ const common = {
     const selectedSkills = getSelectedSkills();
     cards.forEach(card => {
       let containsSelectedSkills = card['skills'].some(skill => selectedSkills.includes(skill));
-      (containsSelectedSkills) ? card['cardContainer'].classList.remove('project__card--hide'): card['cardContainer'].classList.add('project__card--hide');
+      (containsSelectedSkills) ? card['container'].classList.remove('project__card--hide'): card['container'].classList.add('project__card--hide');
     });
     clearTimeout(refreshProjectsListTimeout);
     setTimeout(function() {projectsList.classList.remove('portfolio__projects-list--updating')}, 300);
@@ -273,7 +337,9 @@ const common = {
 
 (function() {
   const mouseStalker = {
-    stalker: common.createNewElement('div', ['mouse-stalker']),
+    stalker: common.createNewElement({
+      classesArr: ['mouse-stalker'],
+    }),
     isSticked: false,
     create: function () {
       const hoverableElements = document.querySelectorAll('.mouse-stalker-hoverable');
@@ -316,7 +382,11 @@ const common = {
         this.hoverTarget = element;
       };
       if(element.dataset.stalkerRadius) {this.stalker.style.setProperty('border-radius', element.dataset.stalkerRadius)};
-      if(element.dataset.stalkerAnimationDuration) {this.adjustAfterTransition(this.hoverTarget, element.dataset.stalkerAnimationDuration)} else {this.updateStalkerDimensions()};
+      if(element.dataset.stalkerAnimationDuration) {
+        this.adjustAfterTransition(this.hoverTarget, element.dataset.stalkerAnimationDuration)
+      } else {
+        this.updateStalkerDimensions()
+      };
     },
     unstick: function (event) {
       this.isSticked = false;
@@ -449,10 +519,13 @@ const common = {
     constructor(element, list) {
       this.container = element;
       this.fullText = element.dataset.unfoldContent;
-      this.foldableTextContainer = common.createNewElement('span', ['contacts__unfoldableText']);
+      this.foldableTextContainer = common.createNewElement({
+        tagName: 'span',
+        parent: this.container.querySelector('.contacts__link'),
+        classesArr: ['contacts__unfoldableText'],
+      });
       this.animationSpeed = common.getValueOfProperty(element, 'transition-duration').replace('s', '') * 1000;
       this.paintingSpeed = Math.floor(this.animationSpeed / this.fullText.length);
-      this.container.querySelector('.contacts__link').append(this.foldableTextContainer);
       this.list = list;
       this.addEventListeners(this);
     };
@@ -584,9 +657,15 @@ document.addEventListener('elementinserted', function (event) {
     return scriptReadyForInsertion;
   };
   const displayScriptAsBackground = async (relativePath) => {
-    const parent = document.querySelector('.portfolio')
-    const codeContainer = common.createNewElement('code', ['code-as-background']);
-    const wrapper = common.createNewElement('div', ['code-as-background__wrapper']);
+    const wrapper = common.createNewElement({
+      parent: document.querySelector('.portfolio'),
+      classesArr: ['code-as-background__wrapper'],
+    });
+    const codeContainer = common.createNewElement({
+      parent: wrapper,
+      tagName: 'code',
+      classesArr: ['code-as-background'],
+    });
     const adjustCodeBackgroundHeight = () => {
       const remToPixels = (int) =>{return getComputedStyle(document.documentElement).fontSize.replace('px', '') * int};
       wrapper.style.height = `${parent.offsetHeight}px`;
@@ -598,7 +677,6 @@ document.addEventListener('elementinserted', function (event) {
     let script = await fetchFileAsText(relativePath);
     codeContainer.innerHTML = await processScriptThroughWorker(script);
     wrapper.append(codeContainer);
-    parent.append(wrapper);
     adjustCodeBackgroundHeight();
     parent.addEventListener('transitionend', adjustCodeBackgroundHeight);
   };
