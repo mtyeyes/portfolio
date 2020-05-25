@@ -2,7 +2,7 @@
 //-----------------------------------------------
 
 const common = {
-  createNewElement: function ({tagName = 'div', parent, classesArr, attributeNameValuePairs, text}) {
+  createNewElement: ({tagName = 'div', parent, classesArr, attributeNameValuePairs, text}) => {
     const newElement = document.createElement(tagName);
     if (parent) {parent.append(newElement)};
     if (classesArr) {classesArr.forEach(className => newElement.classList.add(className))};
@@ -14,10 +14,10 @@ const common = {
     };
     return newElement;
   },
-  getValueOfProperty: function (element, propertyName) {
+  getValueOfProperty: (element, propertyName) => {
     return window.getComputedStyle(element).getPropertyValue(propertyName);
   },
-  mergeArraysAndRemoveRepeats: function (arrayOfArrays) {
+  mergeArraysAndRemoveRepeats: (arrayOfArrays) => {
     let mergedArray = [];
     arrayOfArrays.forEach(arr => mergedArray = mergedArray.concat(arr));
     const uniqueValues = new Set(mergedArray);
@@ -61,14 +61,14 @@ const common = {
 //Creating the projects cards and setting up the filter in preferences menu
 //-------------------------------------------------------------------------
 
-(async function() {
+(async () => {
   const fetchJson = await fetch('resources/projects.json');
   const projectsData = await fetchJson.json();
 
   const cards = [];
   let skillsList;
   let refreshProjectsListTimeout;
-  const browsers = (function() {
+  const browsers = (() => {
     let allSupportedBrowsers = [];
     Object.keys(projectsData).forEach(project => allSupportedBrowsers.push(projectsData[project]['supportedBrowsers']));
     return common.mergeArraysAndRemoveRepeats(allSupportedBrowsers);
@@ -179,7 +179,7 @@ const common = {
         portalContainer.style.setProperty(propertyName, value)
       }
       portalContainer.classList.add('project__card--portal-transition');
-      portal.addEventListener('transitionend', function (event) {
+      portal.addEventListener('transitionend', (event) => {
         portal.activate();
       });
     };
@@ -243,10 +243,10 @@ const common = {
     skills.forEach(str => {
       const newItem = new SkillsItem(str)
       skillsList.append(newItem['container']);
-      newItem['checkbox'].addEventListener('change', function(event) {
+      newItem['checkbox'].addEventListener('change', (event) => {
         clearTimeout(refreshProjectsListTimeout);
         projectsList.classList.add('portfolio__projects-list--updating');
-        refreshProjectsListTimeout = setTimeout(function() {
+        refreshProjectsListTimeout = setTimeout(() => {
           refreshProjectsList(projectsList);
         }, 1200);
       });
@@ -269,16 +269,16 @@ const common = {
       (containsSelectedSkills) ? card['container'].classList.remove('project__card--hide'): card['container'].classList.add('project__card--hide');
     });
     clearTimeout(refreshProjectsListTimeout);
-    setTimeout(function() {projectsList.classList.remove('portfolio__projects-list--updating')}, 300);
+    setTimeout(() => {projectsList.classList.remove('portfolio__projects-list--updating')}, 300);
   };
 
-  (function() {
+  (() => {
     const filledList = createAndFillProjectsList(projectsData);
     fillUsedTechnologiesSelectors(projectsData, filledList);
     document.querySelector('.portfolio__loader').remove();
     document.querySelector('.portfolio').prepend(filledList);
     filledList.dispatchEvent(common.newElementInsertedInDomEvent);
-    document.querySelector('.preferences__btn').addEventListener('click', function (event) {
+    document.querySelector('.preferences__btn').addEventListener('click', (event) => {
       refreshProjectsList(filledList);
     })
   })();
@@ -287,7 +287,7 @@ const common = {
 // Theme switch
 //-------------
 
-(function() {
+(() => {
   const themeSwitcher = document.querySelector('.site-preferences__checkbox--theme-switch');
   const mapThemesStyles = {
     ' light': {
@@ -319,7 +319,7 @@ const common = {
     localStorage.setItem('theme', theme);
   };
 
-  themeSwitcher.addEventListener('change', function (event) {
+  themeSwitcher.addEventListener('change', (event) => {
     (themeSwitcher.checked) ? setTheme(' dark') : setTheme(' light');
   });
 
@@ -335,46 +335,46 @@ const common = {
 // Mouse stalker (circle under mouse pointer)
 //-------------------------------------------
 
-(function() {
-  const mouseStalker = {
-    stalker: common.createNewElement({
-      classesArr: ['mouse-stalker'],
-    }),
-    isSticked: false,
-    create: function () {
-      const hoverableElements = document.querySelectorAll('.mouse-stalker-hoverable');
-      document.body.append(mouseStalker.stalker);
-      mouseStalker.adjust(event);
-      mouseStalker.throttledAdjust = new common.Throttle(mouseStalker.adjust, [event], common.displayRefreshFrequency, mouseStalker);
-      document.addEventListener('mousemove', function (event) {
-        mouseStalker.throttledAdjust.execute([event]);
+(() => {
+  class MouseStalker {
+    constructor(e) {
+      this.stalker = common.createNewElement({
+        parent: document.body,
+        classesArr: ['mouse-stalker'],
       });
-      hoverableElements.forEach(element => {
-        mouseStalker.addListenersToHoverTarget(element);
+      this.isSticked = false;
+      this.hoverableElements = document.querySelectorAll('.mouse-stalker-hoverable');
+      this.adjust(e);
+      this.throttledAdjust = new common.Throttle(this.adjust, [event], common.displayRefreshFrequency, this);
+      document.addEventListener('mousemove', (event) => {
+        this.throttledAdjust.execute([event]);
       });
-      document.addEventListener('elementinserted', function (event) {
+      this.hoverableElements.forEach(element => {
+        this.addListenersToHoverTarget(element);
+      });
+      document.addEventListener('elementinserted', (event) => {
         const hoverableElements = event.target.querySelectorAll('.mouse-stalker-hoverable');
         hoverableElements.forEach(element => {
-          mouseStalker.addListenersToHoverTarget(element);
+          this.addListenersToHoverTarget(element);
         })
       });
-      document.removeEventListener('mousemove', mouseStalker.create);
-    },
-    setPosition: function (xPos, yPos) {
+    };
+    setPosition(xPos, yPos) {
       this.stalker.style.setProperty('transform', `translate(${xPos}px,${yPos}px)`);
-    },
-    adjust: function (event) {
+    };
+    adjust(event) {
+      let xPos, yPos;
       if (this.isSticked) {
         const dimensions = this.hoverTarget.getClientRects()[0];
-        yPos = dimensions['y'] - dimensions['height'] * 0.1;
         xPos = dimensions['x'] - dimensions['width'] * 0.1;
+        yPos = dimensions['y'] - dimensions['height'] * 0.1;
       } else {
-        yPos = event.clientY - (this.stalker.offsetHeight * 0.5);
         xPos = event.clientX - (this.stalker.offsetWidth * 0.5);
-      }
+        yPos = event.clientY - (this.stalker.offsetHeight * 0.5);
+      };
       this.setPosition(xPos, yPos);
-    },
-    stickToElement: function (element) {
+    };
+    stickToElement(element) {
       this.isSticked = true;
       if(element.dataset.stalkerTargetInside) {
         this.hoverTarget = element.querySelector(`.${element.dataset.stalkerTargetInside}`);
@@ -387,15 +387,15 @@ const common = {
       } else {
         this.updateStalkerDimensions()
       };
-    },
-    unstick: function (event) {
+    };
+    unstick(event) {
       this.isSticked = false;
       this.stalker.style.width = null;
       this.stalker.style.height = null;
       this.timerIfTargetMoving = null;
       this.stalker.style.removeProperty('border-radius');
-    },
-    adjustAfterTransition: function(element, speed) {
+    };
+    adjustAfterTransition(element, speed) {
       const context = this;
       let i = speed / common.displayRefreshFrequency;
       const followStickedElement = () => {
@@ -407,43 +407,53 @@ const common = {
         };
       }
       setTimeout(followStickedElement, common.displayRefreshFrequency);
-    },
-    updateStalkerDimensions: function() {
+    };
+    updateStalkerDimensions() {
       const dimensions = this.hoverTarget.getClientRects()[0];
       const stalkerWidth = dimensions['width'] * 1.2;
       const stalkerHeight = dimensions['height'] * 1.2;
       this.setDimensions(stalkerWidth, stalkerHeight);
-    },
-    setDimensions: function (stalkerWidth, stalkerHeight) {
+    };
+    setDimensions(stalkerWidth, stalkerHeight) {
       this.stalker.style.width = `${stalkerWidth}px`;
       this.stalker.style.height = `${stalkerHeight}px`;
-    },
-    addListenersToHoverTarget: function (element) {
-      element.addEventListener('mouseenter', function (event) {
-        mouseStalker.stickToElement(event.currentTarget);
+    };
+    addListenersToHoverTarget(element) {
+      element.addEventListener('mouseenter', (event) => {
+        this.stickToElement(event.currentTarget);
       });
-      element.addEventListener('mouseleave', function (event) {
-        mouseStalker.unstick();
+      element.addEventListener('mouseleave', (event) => {
+        this.unstick();
       });
-    }
+    };
   };
 
-  if(!('ontouchstart' in window)) {document.addEventListener('mousemove', mouseStalker.create)};
+  const renderMouseStalker = (event) => {
+    document.removeEventListener('mousemove', renderMouseStalker);
+    return new MouseStalker(event);
+  };
+
+  if(!('ontouchstart' in window)) {document.addEventListener('mousemove', renderMouseStalker)};
 })();
 
 // Adjust btns position on mouse move to stay on the same axis with mouse
 //-----------------------------------------------------------------------
 
-(async function() {
-  const btnsStickToMouse = {
-    topBtn: document.querySelector('.about-me__btn'),
-    sideBtn: document.querySelector('.preferences__btn'),
-    getDimensions: function() {
+(async () => {
+  class btnsAlignedWithMouse {
+    constructor() {
+      this.topBtn = document.querySelector('.about-me__btn');
+      this.sideBtn = document.querySelector('.preferences__btn');
+      this.throttledAdjust = new common.Throttle(this.adjust, [event], common.displayRefreshFrequency, this);
+      this.getDimensions();
+      this.addEventListeners();
+    };
+    getDimensions() {
       this.btnsSideLength = common.getValueOfProperty(this.topBtn, 'width').replace('px', '');
       this.topBtnOffset = (document.documentElement.clientWidth - this.btnsSideLength) / 2;
       this.sideBtnOffset = (document.documentElement.clientHeight - this.btnsSideLength) / 2;
-    },
-    setPosition: function (element, cursorPosition, axis) {
+    };
+    setPosition(element, cursorPosition, axis) {
       this.allowedPositionRangeX = [0, document.documentElement.clientWidth - this.btnsSideLength];
       this.allowedPositionRangeY = [this.btnsSideLength * 1.2, document.documentElement.clientHeight - this.btnsSideLength];
       let rangeMin, rangeMax, offset;
@@ -461,36 +471,35 @@ const common = {
         position = rangeMax;
       };
       element.style.setProperty('--adjusted-position', `translate${axis}(${position}px)`)
-    },
-    adjustBtns: function (event) {
+    };
+    adjust(event) {
       this.setPosition(this.topBtn, event.clientX, 'X');
       this.setPosition(this.sideBtn, event.clientY, 'Y');
-    },
+    };
+    addEventListeners() {
+      window.addEventListener('resize', (event) => {
+        this.getDimensions();
+      });
+      document.addEventListener('mousemove', (event) => {
+        this.throttledAdjust.execute([event]);
+      });
+    };
   };
 
   if(!('ontouchstart' in window)) {
-    const throttledBtnsStickToMouse = new common.Throttle(btnsStickToMouse.adjustBtns, [event], common.displayRefreshFrequency, btnsStickToMouse);
-    btnsStickToMouse.getDimensions();
-
-    window.addEventListener('resize', function (event) {
-      btnsStickToMouse.getDimensions();
-    });
-
-    document.addEventListener('mousemove', function (event) {
-      throttledBtnsStickToMouse.execute([event]);
-    });
-  }
+    new btnsAlignedWithMouse();
+  };
 })();
 
 //Show/hide modal containers
 //--------------------------
 
-(function() {
+(() => {
   const modalElements = document.querySelectorAll('.modal');
   modalElements.forEach(element => {
     const btn = element.querySelector('.modal__toggle');
 
-    btn.addEventListener('click', function() {
+    btn.addEventListener('click', () => {
       element.classList.toggle('modal--show');
       btn.classList.toggle('modal__toggle--toggled');
     })
@@ -500,7 +509,7 @@ const common = {
 //Show foldable description on hover/focus
 //----------------------------------------
 
-(function() {
+(() => {
   class UnfoldableDescriptonsList {
     constructor(nodeList) {
       this.currentUnfoldedDescription = null;
@@ -529,42 +538,42 @@ const common = {
       this.list = list;
       this.addEventListeners(this);
     };
-    showText(context) {
-      context.list.maintainOneDescriptionUnfolded(context);
-      clearTimeout(context.textIsPainting);
-      if (context.foldableTextContainer.textContent.length < context.fullText.length && window.innerWidth > 1100) {
-        context.textIsPainting = setTimeout(function() {
-          context.foldableTextContainer.textContent = context.foldableTextContainer.textContent + context.fullText[context.foldableTextContainer.textContent.length];
-          context.showText(context);
-        }, context.paintingSpeed);
+    showText() {
+      this.list.maintainOneDescriptionUnfolded(this);
+      clearTimeout(this.textIsPainting);
+      if (this.foldableTextContainer.textContent.length < this.fullText.length && window.innerWidth > 1100) {
+        this.textIsPainting = setTimeout(() => {
+          this.foldableTextContainer.textContent = this.foldableTextContainer.textContent + this.fullText[this.foldableTextContainer.textContent.length];
+          this.showText();
+        }, this.paintingSpeed);
       };
     };
-    hideText(context) {
-      clearTimeout(context.textIsPainting);
-      if (context.foldableTextContainer.textContent.length !== 0) {
-        context.textIsPainting = setTimeout(function() {
-          context.foldableTextContainer.textContent = context.foldableTextContainer.textContent.slice(0, -1);
-          context.hideText(context);
-        }, (context.paintingSpeed * 0.7));
+    hideText() {
+      clearTimeout(this.textIsPainting);
+      if (this.foldableTextContainer.textContent.length !== 0) {
+        this.textIsPainting = setTimeout(() => {
+          this.foldableTextContainer.textContent = this.foldableTextContainer.textContent.slice(0, -1);
+          this.hideText();
+        }, (this.paintingSpeed * 0.7));
       };
     };
-    addEventListeners(context) {
-      context.container.addEventListener('mouseenter', function(event) {
-        context.showText(context);
+    addEventListeners() {
+      this.container.addEventListener('mouseenter', (event) => {
+        this.showText();
       });
-      context.container.addEventListener('focusin', function(event) {
-        context.showText(context);
+      this.container.addEventListener('focusin', (event) => {
+        this.showText();
       });
-      context.container.addEventListener('mouseleave', function(event) {
-        if(context.container.querySelector('a') !== document.activeElement) {
-          context.hideText(context);
+      this.container.addEventListener('mouseleave', (event) => {
+        if(this.container.querySelector('a') !== document.activeElement) {
+          this.hideText();
         };
       });
-      context.container.addEventListener('focusout', function(event) {
-        context.hideText(context);
+      this.container.addEventListener('focusout', (event) => {
+        this.hideText();
       });
-      window.addEventListener('resize', function(event) {
-        if(window.innerWidth < 1100 && context.foldableTextContainer.textContent.length !== 0) {context.hideText(context)};
+      window.addEventListener('resize', (event) => {
+        if(window.innerWidth < 1100 && this.foldableTextContainer.textContent.length !== 0) {this.hideText()};
       });
     }
   };
@@ -576,7 +585,7 @@ const common = {
 //Change language
 //---------------
 
-(function() {
+(() => {
 let multilanguageContainers = document.querySelectorAll('[data-lang-ru]');
 const changeLanguageCheckbox = document.querySelector('.site-preferences__checkbox--language-change');
 const title = {
@@ -610,11 +619,11 @@ if (localStorage.getItem('language')) {
   changeLanguage('En');
 };
 
-changeLanguageCheckbox.addEventListener('change', function (event) {
+changeLanguageCheckbox.addEventListener('change', (event) => {
   (changeLanguageCheckbox.checked) ? changeLanguage('En') : changeLanguage('Ru');
 });
 
-document.addEventListener('elementinserted', function (event) {
+document.addEventListener('elementinserted', (event) => {
   applyLanguageToNewElements(event);
 });
 })();
@@ -622,9 +631,13 @@ document.addEventListener('elementinserted', function (event) {
 //Safari z-index bug workaround
 //-----------------------------
 
-document.addEventListener('elementinserted', function (event) {
+(() => {
   if (navigator.userAgent.indexOf('Safari') !== -1 && navigator.userAgent.indexOf('Chrome') === -1) {
-    document.addEventListener('elementinserted', function (event) {
+    removeTransformFromCards();
+  };
+
+  const removeTransformFromCards = (event) => {
+    document.addEventListener('elementinserted', (event) => {
       const cards = event.target.querySelectorAll('.project__card');
       if(cards) {
         cards.forEach(card => {
@@ -633,13 +646,13 @@ document.addEventListener('elementinserted', function (event) {
         });
       };
     });
-  };
-});
+  }
+})();
 
 //Add this script as a skewed background text
 //-------------------------------------------
 
-(function() {
+(() => {
   const fetchFileAsText = async (relativePath) => {
     let fetchFile = await fetch(relativePath);
     let fileAsText = await fetchFile.text();
