@@ -910,6 +910,11 @@
     text-align: center;
     font-size: 1.5rem;
   }
+
+  .code-as-background {
+    left: -10%;
+    width: 130%;
+  }
 }
 
 @media (min-width: 701px) {
