@@ -653,10 +653,10 @@ document.addEventListener('elementinserted', (event) => {
 //-------------------------------------------
 
 (() => {
-  const fetchFileAsText = async (relativePath) => {
-    let fetchFile = await fetch(relativePath);
-    let fileAsText = await fetchFile.text();
-    return fileAsText;
+  const fetchFileAsText = (relativePath) => {
+    let data =  fetch(relativePath)
+      .then(data => data.text());
+    return data;
   };
   const processScriptThroughWorker = async (script) => {
     const worker = new Worker('worker.js');

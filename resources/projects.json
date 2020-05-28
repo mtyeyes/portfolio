@@ -4,7 +4,7 @@
     "supportedBrowsers": ["chrome", "firefox", "safari", "ie"],
     "description": "Адапитивный pixel-perfect, JS, БЭМ",
     "data-lang-en": "Adaptive pixel-perfect, JS, BEM",
-    "skills": ["JavaScript", "Pixel perfect", "BEM", "Gulp", "Parcel"],
+    "skills": ["JavaScript", "BEM", "Gulp", "Parcel"],
     "link": "https://mtyeyes.github.io/dark-ink/"
   },
   "screenPalette": {
@@ -12,7 +12,7 @@
     "supportedBrowsers": ["chrome", "firefox", "safari"],
     "description": "PWA ночник. JS, custom properties, Local storage",
     "data-lang-en": "PWA nightlight. JS, custom properties, Local storage",
-    "skills": ["JavaScript", "PWA", "Custom properties", "Gulp"],
+    "skills": ["JavaScript", "PWA", "Gulp"],
     "link": "https://mtyeyes.github.io/palette/"
   },
   "overlayInfuser": {
@@ -28,7 +28,7 @@
     "supportedBrowsers": ["chrome", "firefox", "safari", "ie"],
     "description": "Отзывчивый pixel-perfect, БЭМ",
     "data-lang-en": "Responsive pixel-perfect, BEM",
-    "skills": ["Pixel perfect", "Gulp", "BEM"],
+    "skills": ["Gulp", "BEM"],
     "link": "https://mtyeyes.github.io/sedona/"
   }
 }
