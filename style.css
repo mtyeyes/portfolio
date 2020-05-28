@@ -978,7 +978,7 @@
   }
 }
 
-.project__card--hide {
+.portfolio__projects-list .project__card--hide {
   width: 0;
   height: 0;
   min-width: 0;
