@@ -1,6 +1,6 @@
 {
   "darkInk": {
-    "resourcesName": "ink",
+    "resourcesName": "darkink",
     "title": "Dark Ink",
     "supportedBrowsers": ["chrome", "firefox", "safari", "ie"],
     "description": "Адапитивный pixel-perfect, БЭМ",
@@ -18,7 +18,7 @@
     "link": "https://mtyeyes.github.io/palette/"
   },
   "overlayInfuser": {
-    "resourcesName": "infuser",
+    "resourcesName": "overlayInfuser",
     "title": "Overlay Infuser",
     "supportedBrowsers": ["chrome", "firefox", "safari", "ie"],
     "description": "Скрипт для накладывания макета на верстку",
