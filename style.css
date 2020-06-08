@@ -314,30 +314,21 @@
   width: 100%;
 }
 
+.project__thumbnail-wrapper {
+  display: flex;
+}
+
 .project__thumbnail--portal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: calc(100% + 17px);
   background-color: var(--box-shadow-color);
 }
 
 .project__thumbnail--img {
   object-fit: cover;
-}
-
-.project__thumbnail::after {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  background: rgba(0, 0, 0, 0);
-  transition: 3s;
-  z-index: 999;
-}
-
-.project__card:hover .project__thumbnail::after,
-.project__card:focus .project__thumbnail::after,
-.project__link:focus ~ .project__thumbnail::after {
-  background: rgba(0, 0, 0, 0.2);
 }
 
 .project__link {
@@ -355,6 +346,7 @@
   opacity: 0;
   transition: 400ms;
   touch-action: manipulation;
+  z-index: 10;
   will-change: transform, opacity, border-radius;
 }
 

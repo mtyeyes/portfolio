@@ -107,18 +107,28 @@ const common = {
       return link;
     };
     createThumbnail(obj) {
-      let thumbnail;
       if ('HTMLPortalElement' in window) {
-        thumbnail = this.createPortal(obj);
+        const thumbnail = this.createPortal(obj);
+        return thumbnail;
       } else {
-        thumbnail = common.createNewElement({
-          tagName: 'img',
+        const thumbnailWrapper = common.createNewElement({
+          tagName: 'picture',
+          classesArr: ['project__thumbnail-wrapper'],
           parent: this.container,
-          classesArr: ['project__thumbnail', 'project__thumbnail--img'],
-          attributeNameValuePairs: {'src': `resources/${obj['title']}.jpg`, 'alt': `${obj['title']} thumbnail`}
         });
+        const source = common.createNewElement({
+          tagName: 'source',
+          parent: thumbnailWrapper,
+          attributeNameValuePairs: {'type': 'image/webp', 'srcset': `resources/${obj['resourcesName']}.webp 1x, resources/${obj['resourcesName']}-2x.webp 2x`}
+        })
+        const thumbnail = common.createNewElement({
+          tagName: 'img',
+          parent: thumbnailWrapper,
+          classesArr: ['project__thumbnail', 'project__thumbnail--img'],
+          attributeNameValuePairs: {'src': `resources/${obj['resourcesName']}.jpg`, 'srcset': `resources/${obj['resourcesName']}-2x.jpg 2x`, 'alt': `${obj['title']} thumbnail`}
+        });
+        return thumbnailWrapper;
       };
-      return thumbnail;
     };
     createPortal(obj) {
       const portal = common.createNewElement({

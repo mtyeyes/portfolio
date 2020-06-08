@@ -1,5 +1,6 @@
 {
   "darkInk": {
+    "resourcesName": "ink",
     "title": "Dark Ink",
     "supportedBrowsers": ["chrome", "firefox", "safari", "ie"],
     "description": "Адапитивный pixel-perfect, БЭМ",
@@ -8,6 +9,7 @@
     "link": "https://mtyeyes.github.io/dark-ink/"
   },
   "screenPalette": {
+    "resourcesName": "palette",
     "title": "Screen Palette",
     "supportedBrowsers": ["chrome", "firefox", "safari"],
     "description": "PWA ночник",
@@ -16,6 +18,7 @@
     "link": "https://mtyeyes.github.io/palette/"
   },
   "overlayInfuser": {
+    "resourcesName": "infuser",
     "title": "Overlay Infuser",
     "supportedBrowsers": ["chrome", "firefox", "safari", "ie"],
     "description": "Скрипт для накладывания макета на верстку",
@@ -24,6 +27,7 @@
     "link": "https://mtyeyes.github.io/instruments/overlay-infuser"
   },
   "sedona": {
+    "resourcesName": "sedona",
     "title": "Sedona",
     "supportedBrowsers": ["chrome", "firefox", "safari", "ie"],
     "description": "Отзывчивый pixel-perfect, БЭМ",
