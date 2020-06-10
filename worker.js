@@ -21,7 +21,7 @@ const prepareScriptForDemonstration = (script) => {
     return str.replace(regexForReservedSymbols, replaceSymbols);
   };
   const highlightMethods = (str) => {
-    const regexForMethods = /\.{1}(?!html|css|js|json|jpg|svg|ico)[a-zA-Z]+/g;
+    const regexForMethods = /\.{1}(?!html|css|js|json|jpg|svg|ico|webp)[a-zA-Z]+/g;
     const isQuerySelectorParameter = (offset, string) => {
       return string[(offset -1)] === '\'';
     };
