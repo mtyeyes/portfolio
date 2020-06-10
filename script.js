@@ -70,7 +70,7 @@ const common = {
   let refreshProjectsListTimeout;
   const browsers = (() => {
     let allSupportedBrowsers = [];
-    Object.keys(projectsData).forEach(project => allSupportedBrowsers.push(projectsData[project]['supportedBrowsers']));
+    Object.keys(projectsData).forEach(project => allSupportedBrowsers.push(projectsData[project].supportedBrowsers));
     return common.mergeArraysAndRemoveRepeats(allSupportedBrowsers);
   })();
 
@@ -84,20 +84,20 @@ const common = {
       this.thumbnail = this.createThumbnail(obj);
       this.supportedBrowsersTab = this.createSupportedBrowsersTab(obj);
       this.descriptionTab = this.createDescriptionTab(obj);
-      this.skills = obj['skills'];
+      this.skills = obj.skills;
     };
     createLink(obj) {
       const link = common.createNewElement({
         tagName: 'a',
         parent: this.container,
         classesArr: ['project__link', 'mouse-stalker-hoverable'],
-        attributeNameValuePairs: {'href': obj['link'], 'target': '_blank', 'aria-label': obj['title']},
+        attributeNameValuePairs: {'href': obj.link, 'target': '_blank', 'aria-label': obj.title},
       });
       const linkCaption = common.createNewElement({
         tagName: 'span',
         parent: link,
         classesArr: ['project__link-caption', 'visually-hidden'],
-        text: obj['title'],
+        text: obj.title,
       });
       const arrowIcon = createSvgUseElement({
         svgIconName: '#icon-link',
@@ -119,13 +119,13 @@ const common = {
         const source = common.createNewElement({
           tagName: 'source',
           parent: thumbnailWrapper,
-          attributeNameValuePairs: {'type': 'image/webp', 'srcset': `resources/${obj['resourcesName']}.webp 1x, resources/${obj['resourcesName']}-2x.webp 2x`}
+          attributeNameValuePairs: {'type': 'image/webp', 'srcset': `resources/${obj.resourcesName}.webp 1x, resources/${obj.resourcesName}-2x.webp 2x`}
         })
         const thumbnail = common.createNewElement({
           tagName: 'img',
           parent: thumbnailWrapper,
           classesArr: ['project__thumbnail', 'project__thumbnail--img'],
-          attributeNameValuePairs: {'src': `resources/${obj['resourcesName']}.jpg`, 'srcset': `resources/${obj['resourcesName']}-2x.jpg 2x`, 'alt': `${obj['title']} thumbnail`}
+          attributeNameValuePairs: {'src': `resources/${obj.resourcesName}.jpg`, 'srcset': `resources/${obj.resourcesName}-2x.jpg 2x`, 'alt': `${obj.title} thumbnail`}
         });
         return thumbnailWrapper;
       };
@@ -135,7 +135,7 @@ const common = {
         tagName: 'portal',
         parent: this.container,
         classesArr: ['project__thumbnail', 'project__thumbnail--portal'],
-        attributeNameValuePairs: {'src': obj['link']},
+        attributeNameValuePairs: {'src': obj.link},
       });
       this.link.addEventListener('click', (event) => {
         event.preventDefault();
@@ -159,7 +159,7 @@ const common = {
           svgIconName: `#icon-browser-${browser}`,
           parent: listItem,
         });
-        if (!obj['supportedBrowsers'].includes(browser)) {listItem.classList.add('project__browser-support--not-supported')}
+        if (!obj.supportedBrowsers.includes(browser)) {listItem.classList.add('project__browser-support--not-supported')}
       });
       return list;
     };
@@ -172,8 +172,8 @@ const common = {
         tagName: 'p',
         parent: descriptionWrapper,
         classesArr: ['project__description'],
-        attributeNameValuePairs: {'data-lang-ru': obj['description'], 'data-lang-en': obj['data-lang-en']},
-        text: obj['description'],
+        attributeNameValuePairs: {'data-lang-ru': obj.description, 'data-lang-en': obj.descriptionEn},
+        text: obj.description,
       });
       return descriptionWrapper;
     }
@@ -247,13 +247,13 @@ const common = {
     });
     let skills = [];
     for (let obj in source) {
-      skills.push(source[obj]['skills']);
+      skills.push(source[obj].skills);
     };
     skills = common.mergeArraysAndRemoveRepeats(skills);
     skills.forEach(str => {
       const newItem = new SkillsItem(str)
-      skillsList.append(newItem['container']);
-      newItem['checkbox'].addEventListener('change', (event) => {
+      skillsList.append(newItem.container);
+      newItem.checkbox.addEventListener('change', (event) => {
         clearTimeout(refreshProjectsListTimeout);
         projectsList.classList.add('portfolio__projects-list--updating');
         refreshProjectsListTimeout = setTimeout(() => {
@@ -275,8 +275,8 @@ const common = {
   const refreshProjectsList = (projectsList) => {
     const selectedSkills = getSelectedSkills();
     cards.forEach(card => {
-      let containsSelectedSkills = card['skills'].some(skill => selectedSkills.includes(skill));
-      (containsSelectedSkills) ? card['container'].classList.remove('project__card--hide'): card['container'].classList.add('project__card--hide');
+      let containsSelectedSkills = card.skills.some(skill => selectedSkills.includes(skill));
+      (containsSelectedSkills) ? card.container.classList.remove('project__card--hide'): card.container.classList.add('project__card--hide');
     });
     clearTimeout(refreshProjectsListTimeout);
     setTimeout(() => {projectsList.classList.remove('portfolio__projects-list--updating')}, 300);
@@ -376,8 +376,8 @@ const common = {
       let xPos, yPos;
       if (this.isSticked) {
         const dimensions = this.hoverTarget.getClientRects()[0];
-        xPos = dimensions['x'] - dimensions['width'] * 0.1;
-        yPos = dimensions['y'] - dimensions['height'] * 0.1;
+        xPos = dimensions.x - dimensions.width * 0.1;
+        yPos = dimensions.y - dimensions.height * 0.1;
       } else {
         xPos = event.clientX - (this.stalker.offsetWidth * 0.5);
         yPos = event.clientY - (this.stalker.offsetHeight * 0.5);
@@ -420,8 +420,8 @@ const common = {
     };
     updateStalkerDimensions() {
       const dimensions = this.hoverTarget.getClientRects()[0];
-      const stalkerWidth = dimensions['width'] * 1.2;
-      const stalkerHeight = dimensions['height'] * 1.2;
+      const stalkerWidth = dimensions.width * 1.2;
+      const stalkerHeight = dimensions.height * 1.2;
       this.setDimensions(stalkerWidth, stalkerHeight);
     };
     setDimensions(stalkerWidth, stalkerHeight) {

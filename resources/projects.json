@@ -4,7 +4,7 @@
     "title": "Dark Ink",
     "supportedBrowsers": ["chrome", "firefox", "safari", "ie"],
     "description": "Адапитивный pixel-perfect, БЭМ",
-    "data-lang-en": "Adaptive pixel-perfect, BEM",
+    "descriptionEn": "Adaptive pixel-perfect, BEM",
     "skills": ["JavaScript", "BEM", "Gulp", "Parcel"],
     "link": "https://mtyeyes.github.io/dark-ink/"
   },
@@ -13,7 +13,7 @@
     "title": "Screen Palette",
     "supportedBrowsers": ["chrome", "firefox", "safari"],
     "description": "PWA ночник",
-    "data-lang-en": "PWA nightlight",
+    "descriptionEn": "PWA nightlight",
     "skills": ["JavaScript", "PWA", "Gulp"],
     "link": "https://mtyeyes.github.io/palette/"
   },
@@ -22,7 +22,7 @@
     "title": "Overlay Infuser",
     "supportedBrowsers": ["chrome", "firefox", "safari", "ie"],
     "description": "Скрипт для накладывания макета на верстку",
-    "data-lang-en": "Script to place overlay image on top of the document",
+    "descriptionEn": "Script to place overlay image on top of the document",
     "skills": ["JavaScript"],
     "link": "https://mtyeyes.github.io/instruments/overlay-infuser"
   },
@@ -31,7 +31,7 @@
     "title": "Sedona",
     "supportedBrowsers": ["chrome", "firefox", "safari", "ie"],
     "description": "Отзывчивый pixel-perfect, БЭМ",
-    "data-lang-en": "Responsive pixel-perfect, BEM",
+    "descriptionEn": "Responsive pixel-perfect, BEM",
     "skills": ["Gulp", "BEM"],
     "link": "https://mtyeyes.github.io/sedona/"
   }
