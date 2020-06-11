@@ -680,8 +680,9 @@ document.addEventListener('elementinserted', (event) => {
     return scriptReadyForInsertion;
   };
   const displayScriptAsBackground = async (relativePath) => {
+    const portfolio = document.querySelector('.portfolio');
     const wrapper = common.createNewElement({
-      parent: document.querySelector('.portfolio'),
+      parent: portfolio,
       classesArr: ['code-as-background__wrapper'],
     });
     const codeContainer = common.createNewElement({
@@ -691,17 +692,16 @@ document.addEventListener('elementinserted', (event) => {
     });
     const adjustCodeBackgroundHeight = () => {
       const remToPixels = (int) =>{return getComputedStyle(document.documentElement).fontSize.replace('px', '') * int};
-      wrapper.style.height = `${parent.offsetHeight}px`;
-      if(codeContainer.offsetHeight < parent.offsetHeight + remToPixels(18)) {
+      wrapper.style.height = `${portfolio.offsetHeight}px`;
+      if(codeContainer.offsetHeight < portfolio.offsetHeight + remToPixels(18)) {
         codeContainer.innerHTML = `${codeContainer.innerHTML}${codeContainer.innerHTML}`;
         adjustCodeBackgroundHeight();
       };
     };
     let script = await fetchFileAsText(relativePath);
     codeContainer.innerHTML = await processScriptThroughWorker(script);
-    wrapper.append(codeContainer);
     adjustCodeBackgroundHeight();
-    parent.addEventListener('transitionend', adjustCodeBackgroundHeight);
+    window.addEventListener('resize', adjustCodeBackgroundHeight);
     document.addEventListener('elementinserted', adjustCodeBackgroundHeight);
   };
 
