@@ -4,7 +4,6 @@
 const common = {
   createNewElement: ({tagName = 'div', parent, classesArr, attributeNameValuePairs, text}) => {
     const newElement = document.createElement(tagName);
-    if (parent) {parent.append(newElement)};
     if (classesArr) {classesArr.forEach(className => newElement.classList.add(className))};
     if (text) {newElement.textContent = text};
     if (attributeNameValuePairs) {
@@ -12,6 +11,7 @@ const common = {
         newElement.setAttribute(attributeName, value);
       })
     };
+    if (parent) {parent.append(newElement)};
     return newElement;
   },
   getValueOfProperty: (element, propertyName) => {
@@ -65,7 +65,7 @@ const common = {
   const fetchJson = await fetch('resources/projects.json');
   const projectsData = await fetchJson.json();
 
-  const cards = [];
+  let cards = [];
   let skillsList;
   let refreshProjectsListTimeout;
   const browsers = (() => {
@@ -406,12 +406,11 @@ const common = {
       this.stalker.style.removeProperty('border-radius');
     };
     adjustAfterTransition(element, speed) {
-      const context = this;
       let i = speed / common.displayRefreshFrequency;
       const followStickedElement = () => {
-        if (context.hoverTarget === element && context.isSticked === true && i > 0) {
-          context.updateStalkerDimensions();
-          context.adjust();
+        if (this.hoverTarget === element && this.isSticked === true && i > 0) {
+          this.updateStalkerDimensions();
+          this.adjust();
           i--;
           setTimeout(followStickedElement, common.displayRefreshFrequency);
         };

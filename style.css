@@ -195,11 +195,6 @@
   transition: 500ms;
 }
 
-.contacts__contact {
-  transition: 200ms;
-  flex-shrink: 1;
-}
-
 .contacts__link {
   display: flex;
   flex-wrap: nowrap;
