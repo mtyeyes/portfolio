@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Device motion and orientation api debugger</title>
+  </head>
+  <body>
+    <button class="btn" id="pauseBtn">Pause</button>
+    <div class="container">
+      <p>acc x: <span id="accX"></span></p>
+      <p>acc y: <span id="accY"></span></p>
+      <p>acc z: <span id="accZ"></span></p>
+      <p>acc+g x: <span id="accGravX"></span></p>
+      <p>acc+g y: <span id="accGravY"></span></p>
+      <p>acc+g z: <span id="accGravZ"></span></p>
+      <p>----------</p>
+      <p>fontToBack: <span id="fontToBackSpan"></span></p>
+      <p>leftToRight: <span id="leftToRightSpan"></span></p>
+      <p>rotateDegrees: <span id="rotateDegreesSpan"></span></p>
+    </div>
+    <style type="text/css">
+      body {
+        background-color: #282c34;
+      }
+
+      p {
+        text-align: center;
+        margin: 15px 0 0 0;
+      }
+
+      .container {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 80%;
+        min-width: 300px;
+        max-width: 900px;
+        margin: 100px auto 0;
+        font-size: 30px;
+        color: #98c379;
+      }
+
+      .btn {
+        margin-left: 20px;
+        background-color: transparent;
+        border: 3px solid #98c379;
+        border-radius: 25px;
+        font-size: 26px;
+        color: #98c379;
+      }
+
+      .btn:active {
+        color: #e06c75;
+        border-color: #e06c75;
+      }
+    </style>
+    <script>
+      let lazyPause = false;
+      const lazyPauseToggle = () => {
+        lazyPause = !lazyPause;
+      };
+      pauseBtn.addEventListener('click', lazyPauseToggle);
+
+      const updateOrientationData = (frontToBack, leftToRight, rotateDegrees) => {
+          fontToBackSpan.textContent = frontToBack;
+          leftToRightSpan.textContent = leftToRight;
+          rotateDegreesSpan.textContent = rotateDegreesBack;
+      };
+      const updateMotionData = (e) => {
+        const acc = e.acceleration;
+        const accWithGravity = e.accelerationIncludingGravity;
+
+        accX.textContent = acc.x;
+        accY.textContent = acc.y;
+        accZ.textContent = acc.z;
+        accGravX.textContent = accWithGravity.x;
+        accGravY.textContent = accWithGravity.y;
+        accGravZ.textContent = accWithGravity.z;
+      };
+      if (window.DeviceOrientationEvent) {
+        window.addEventListener("deviceorientation", (e) => {
+            // alpha: rotation around z-axis
+            const rotateDegrees = e.alpha;
+            // gamma: left to right
+            const leftToRight = e.gamma;
+            // beta: front back motion
+            const frontToBack = e.beta;
+            if (!lazyPause) {
+              updateOrientationData(frontToBack, leftToRight, rotateDegrees);
+            };
+        });
+      };
+      if (window.DeviceMotionEvent) {
+        window.addEventListener("devicemotion", (e) => {
+            if (!lazyPause) {
+              updateMotionData(e);
+            };
+        });
+      };
+    </script>
+  </body>
+</html>
