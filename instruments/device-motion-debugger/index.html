@@ -28,6 +28,13 @@
         margin: 15px 0 0 0;
       }
 
+      span {
+        display: inline-block;
+        width: 65px;
+        text-align: left;
+        overflow: hidden;
+      }
+
       .container {
         display: flex;
         flex-direction: column;
@@ -41,6 +48,8 @@
       }
 
       .btn {
+        width: 100px;
+        height: 100px;
         margin-left: 20px;
         background-color: transparent;
         border: 3px solid #98c379;
@@ -64,7 +73,7 @@
       const updateOrientationData = (frontToBack, leftToRight, rotateDegrees) => {
           fontToBackSpan.textContent = frontToBack;
           leftToRightSpan.textContent = leftToRight;
-          rotateDegreesSpan.textContent = rotateDegreesBack;
+          rotateDegreesSpan.textContent = rotateDegrees;
       };
       const updateMotionData = (e) => {
         const acc = e.acceleration;
