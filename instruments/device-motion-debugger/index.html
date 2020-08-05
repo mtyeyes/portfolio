@@ -5,9 +5,8 @@
     <title>Device motion and orientation api debugger</title>
   </head>
   <body>
-    <button class="btn" id="pauseBtn">Pause</button>
     <div class="container">
-      <p>acc x: <span id="accX"></span></p>
+      <p>acc x: <span id="accX">10</span></p>
       <p>acc y: <span id="accY"></span></p>
       <p>acc z: <span id="accZ"></span></p>
       <p>acc+g x: <span id="accGravX"></span></p>
@@ -18,6 +17,7 @@
       <p>leftToRight: <span id="leftToRightSpan"></span></p>
       <p>rotateDegrees: <span id="rotateDegreesSpan"></span></p>
     </div>
+    <button class="btn" id="pauseBtn">Pause</button>
     <style type="text/css">
       body {
         background-color: #282c34;
@@ -25,6 +25,7 @@
 
       p {
         text-align: center;
+        display: inline-block;
         margin: 15px 0 0 0;
       }
 
@@ -48,9 +49,10 @@
       }
 
       .btn {
-        width: 100px;
-        height: 100px;
-        margin-left: 20px;
+        display: block;
+        width: 200px;
+        height: 200px;
+        margin: 20px auto 0;
         background-color: transparent;
         border: 3px solid #98c379;
         border-radius: 25px;
