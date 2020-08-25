@@ -4,4 +4,5 @@
 instruments/image-cropper/
 instruments/letter-spacing-css-converter/
 instruments/regex-creator/
+node_modules
 Thumbs.db
