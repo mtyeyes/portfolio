@@ -8,15 +8,15 @@ const prepareScriptForDemonstration = (script) => {
     const regexForComments = /\/\/.+/g;
     const regexForNewlinesAndWhitespaces = /\n|\s/g;
     return str.replace(regexForComments, '').replace(regexForNewlinesAndWhitespaces, '');
-  }
+  };
   const replaceHtmlReservedSymbols = (str) => {
     const regexForReservedSymbols = /&|<|>/g;
     const replaceSymbols = (match) => {
       switch (match) {
-        case '&': return '&amp;';
-        case '<': return '&lt;';
-        case '>': return '&gt;';
-      };
+      case '&': return '&amp;';
+      case '<': return '&lt;';
+      case '>': return '&gt;';
+      }
     };
     return str.replace(regexForReservedSymbols, replaceSymbols);
   };
@@ -26,7 +26,7 @@ const prepareScriptForDemonstration = (script) => {
       return string[(offset -1)] === '\'';
     };
     const encaseMethodsInSpan = (match, offset, string) => {
-      if(isQuerySelectorParameter(offset, string)) {return match}; //this would be replaced with (?<!\') as soon as most browsers would implement lookbehind
+      if(isQuerySelectorParameter(offset, string)) {return match} //this would be replaced with (?<!\') as soon as most browsers would implement lookbehind
       return `<span class="code-as-background--highlight">${match}</span>`;
     };
     return str.replace(regexForMethods, encaseMethodsInSpan);

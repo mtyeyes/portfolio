@@ -4,14 +4,14 @@
 const common = {
   createNewElement: ({tagName = 'div', parent, classesArr, attributeNameValuePairs, text}) => {
     const newElement = document.createElement(tagName);
-    if (classesArr) {classesArr.forEach(className => newElement.classList.add(className))};
-    if (text) {newElement.textContent = text};
+    if (classesArr) {classesArr.forEach(className => newElement.classList.add(className))}
+    if (text) {newElement.textContent = text}
     if (attributeNameValuePairs) {
       Object.entries(attributeNameValuePairs).forEach(([attributeName, value]) => {
         newElement.setAttribute(attributeName, value);
-      })
-    };
-    if (parent) {parent.append(newElement)};
+      });
+    }
+    if (parent) {parent.append(newElement)}
     return newElement;
   },
   getValueOfProperty: (element, propertyName) => {
@@ -31,10 +31,10 @@ const common = {
       this.functionParametersArr = functionParametersArr;
       this.interval = interval;
       this.context = functionContext || this;
-    };
+    }
     invokeFunction() {
       this.functionToCall.apply(this.context, this.functionParametersArr);
-    };
+    }
     execute(functionParametersArr) {
       this.functionParametersArr = functionParametersArr;
       if (!this.isThrottled) {
@@ -42,19 +42,19 @@ const common = {
         this.throttle();
       } else {
         this.isEventFiredWhileThrottled = true;
-      };
-    };
+      }
+    }
     throttle() {
       this.isThrottled = true;
       this.timer = setTimeout(this.unthrottle.bind(this), this.interval);
-    };
+    }
     unthrottle() {
       this.isThrottled = false;
       if (this.isEventFiredWhileThrottled) {
         this.isEventFiredWhileThrottled = false;
         this.execute(this.functionParametersArr);
-      };
-    };
+      }
+    }
   }
 };
 
@@ -85,7 +85,7 @@ const common = {
       this.supportedBrowsersTab = this.createSupportedBrowsersTab(obj);
       this.descriptionTab = this.createDescriptionTab(obj);
       this.skills = obj.skills;
-    };
+    }
     createLink(obj) {
       const link = common.createNewElement({
         tagName: 'a',
@@ -93,19 +93,19 @@ const common = {
         classesArr: ['project__link', 'mouse-stalker-hoverable'],
         attributeNameValuePairs: {'href': obj.link, 'target': '_blank', 'aria-label': obj.title},
       });
-      const linkCaption = common.createNewElement({
+      common.createNewElement({
         tagName: 'span',
         parent: link,
         classesArr: ['project__link-caption', 'visually-hidden'],
         text: obj.title,
       });
-      const arrowIcon = createSvgUseElement({
+      createSvgUseElement({
         svgIconName: '#icon-link',
         parent: link,
         classesArr: ['project__link-svg'],
       });
       return link;
-    };
+    }
     createThumbnail(obj) {
       if ('HTMLPortalElement' in window) {
         const thumbnail = this.createPortal(obj);
@@ -116,20 +116,20 @@ const common = {
           classesArr: ['project__thumbnail-wrapper'],
           parent: this.container,
         });
-        const source = common.createNewElement({
+        common.createNewElement({
           tagName: 'source',
           parent: thumbnailWrapper,
           attributeNameValuePairs: {'type': 'image/webp', 'srcset': `resources/${obj.resourcesName}.webp 1x, resources/${obj.resourcesName}-2x.webp 2x`}
-        })
-        const thumbnail = common.createNewElement({
+        });
+        common.createNewElement({
           tagName: 'img',
           parent: thumbnailWrapper,
           classesArr: ['project__thumbnail', 'project__thumbnail--img'],
           attributeNameValuePairs: {'src': `resources/${obj.resourcesName}.jpg`, 'srcset': `resources/${obj.resourcesName}-2x.jpg 2x`, 'alt': `${obj.title} thumbnail`}
         });
         return thumbnailWrapper;
-      };
-    };
+      }
+    }
     createPortal(obj) {
       const portal = common.createNewElement({
         tagName: 'portal',
@@ -142,7 +142,7 @@ const common = {
         this.travelThroughPortal(event);
       });
       return portal;
-    };
+    }
     createSupportedBrowsersTab(obj) {
       const list = common.createNewElement({
         tagName: 'ul',
@@ -155,20 +155,20 @@ const common = {
           parent: list,
           classesArr: ['project__browser-support', `project__browser-support--${browser}`],
         });
-        const svgIcon = createSvgUseElement({
+        createSvgUseElement({
           svgIconName: `#icon-browser-${browser}`,
           parent: listItem,
         });
         if (!obj.supportedBrowsers.includes(browser)) {listItem.classList.add('project__browser-support--not-supported')}
       });
       return list;
-    };
+    }
     createDescriptionTab(obj) {
       const descriptionWrapper = common.createNewElement({
         parent: this.container,
         classesArr: ['project__description-wrapper'],
       });
-      const description = common.createNewElement({
+      common.createNewElement({
         tagName: 'p',
         parent: descriptionWrapper,
         classesArr: ['project__description'],
@@ -186,14 +186,14 @@ const common = {
         '--y-offset': `${portalDimensions.top}px`
       };
       for (let [propertyName, value] of Object.entries(animationValues)) {
-        portalContainer.style.setProperty(propertyName, value)
+        portalContainer.style.setProperty(propertyName, value);
       }
       portalContainer.classList.add('project__card--portal-transition');
-      portal.addEventListener('transitionend', (event) => {
+      portal.addEventListener('transitionend', () => {
         portal.activate();
       });
-    };
-  };
+    }
+  }
 
   class SkillsItem {
     constructor(technology) {
@@ -215,17 +215,17 @@ const common = {
         text: technology,
       });
     }
-  };
+  }
 
   const createSvgUseElement = ({svgIconName, parent, classesArr}) => {
     const svgContainer = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     const svgUse = document.createElementNS('http://www.w3.org/2000/svg', 'use');
     svgUse.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', svgIconName);
     svgContainer.append(svgUse);
-    if(classesArr) {classesArr.forEach(className => svgContainer.classList.add(className))};
-    if (parent) {parent.append(svgContainer)};
-    return svgContainer
-  }
+    if(classesArr) {classesArr.forEach(className => svgContainer.classList.add(className))}
+    if (parent) {parent.append(svgContainer)}
+    return svgContainer;
+  };
 
   const createAndFillProjectsList = (source) => {
     const projectsList = common.createNewElement({
@@ -237,7 +237,7 @@ const common = {
       cards.push(projectCard);
       projectsList.append(projectCard['container']);
     }
-    return projectsList
+    return projectsList;
   };
 
   const fillUsedTechnologiesSelectors = (source, projectsList) => {
@@ -248,12 +248,12 @@ const common = {
     let skills = [];
     for (let obj in source) {
       skills.push(source[obj].skills);
-    };
+    }
     skills = common.mergeArraysAndRemoveRepeats(skills);
     skills.forEach(str => {
-      const newItem = new SkillsItem(str)
+      const newItem = new SkillsItem(str);
       skillsList.append(newItem.container);
-      newItem.checkbox.addEventListener('change', (event) => {
+      newItem.checkbox.addEventListener('change', () => {
         clearTimeout(refreshProjectsListTimeout);
         projectsList.classList.add('portfolio__projects-list--updating');
         refreshProjectsListTimeout = setTimeout(() => {
@@ -288,9 +288,9 @@ const common = {
     document.querySelector('.portfolio__loader').remove();
     document.querySelector('.portfolio').prepend(filledList);
     filledList.dispatchEvent(common.newElementInsertedInDomEvent);
-    document.querySelector('.preferences__btn').addEventListener('click', (event) => {
+    document.querySelector('.preferences__btn').addEventListener('click', () => {
       refreshProjectsList(filledList);
-    })
+    });
   })();
 })();
 
@@ -325,21 +325,21 @@ const common = {
   const setTheme = (theme) => {
     for (let [propertyName, value] of Object.entries(mapThemesStyles[theme])) {
       document.documentElement.style.setProperty(propertyName, value);
-    };
+    }
     localStorage.setItem('theme', theme);
   };
 
-  themeSwitcher.addEventListener('change', (event) => {
+  themeSwitcher.addEventListener('change', () => {
     (themeSwitcher.checked) ? setTheme(' dark') : setTheme(' light');
   });
 
   if (localStorage.getItem('theme')) {
     setTheme(localStorage.getItem('theme'));
-  };
+  }
 
   if (common.getValueOfProperty(document.documentElement, '--theme') === ' dark') {
     themeSwitcher.checked = true;
-  };
+  }
 })();
 
 // Mouse stalker (circle under mouse pointer)
@@ -366,12 +366,12 @@ const common = {
         const hoverableElements = event.target.querySelectorAll('.mouse-stalker-hoverable');
         hoverableElements.forEach(element => {
           this.addListenersToHoverTarget(element);
-        })
+        });
       });
-    };
+    }
     setPosition(xPos, yPos) {
       this.stalker.style.setProperty('transform', `translate(${xPos}px,${yPos}px)`);
-    };
+    }
     adjust(event) {
       let xPos, yPos;
       if (this.isSticked) {
@@ -381,30 +381,30 @@ const common = {
       } else {
         xPos = event.clientX - (this.stalker.offsetWidth * 0.5);
         yPos = event.clientY - (this.stalker.offsetHeight * 0.5);
-      };
+      }
       this.setPosition(xPos, yPos);
-    };
+    }
     stickToElement(element) {
       this.isSticked = true;
       if(element.dataset.stalkerTargetInside) {
         this.hoverTarget = element.querySelector(`.${element.dataset.stalkerTargetInside}`);
       } else {
         this.hoverTarget = element;
-      };
-      if(element.dataset.stalkerRadius) {this.stalker.style.setProperty('border-radius', element.dataset.stalkerRadius)};
+      }
+      if(element.dataset.stalkerRadius) {this.stalker.style.setProperty('border-radius', element.dataset.stalkerRadius)}
       if(element.dataset.stalkerAnimationDuration) {
-        this.adjustAfterTransition(this.hoverTarget, element.dataset.stalkerAnimationDuration)
+        this.adjustAfterTransition(this.hoverTarget, element.dataset.stalkerAnimationDuration);
       } else {
-        this.updateStalkerDimensions()
-      };
-    };
-    unstick(event) {
+        this.updateStalkerDimensions();
+      }
+    }
+    unstick() {
       this.isSticked = false;
       this.stalker.style.width = null;
       this.stalker.style.height = null;
       this.timerIfTargetMoving = null;
       this.stalker.style.removeProperty('border-radius');
-    };
+    }
     adjustAfterTransition(element, speed) {
       let i = speed / common.displayRefreshFrequency;
       const followStickedElement = () => {
@@ -413,36 +413,36 @@ const common = {
           this.adjust();
           i--;
           setTimeout(followStickedElement, common.displayRefreshFrequency);
-        };
-      }
+        }
+      };
       setTimeout(followStickedElement, common.displayRefreshFrequency);
-    };
+    }
     updateStalkerDimensions() {
       const dimensions = this.hoverTarget.getClientRects()[0];
       const stalkerWidth = dimensions.width * 1.2;
       const stalkerHeight = dimensions.height * 1.2;
       this.setDimensions(stalkerWidth, stalkerHeight);
-    };
+    }
     setDimensions(stalkerWidth, stalkerHeight) {
       this.stalker.style.width = `${stalkerWidth}px`;
       this.stalker.style.height = `${stalkerHeight}px`;
-    };
+    }
     addListenersToHoverTarget(element) {
       element.addEventListener('mouseenter', (event) => {
         this.stickToElement(event.currentTarget);
       });
-      element.addEventListener('mouseleave', (event) => {
+      element.addEventListener('mouseleave', () => {
         this.unstick();
       });
-    };
-  };
+    }
+  }
 
   const renderMouseStalker = (event) => {
     document.removeEventListener('mousemove', renderMouseStalker);
     return new MouseStalker(event);
   };
 
-  if(!('ontouchstart' in window)) {document.addEventListener('mousemove', renderMouseStalker)};
+  if(!('ontouchstart' in window)) {document.addEventListener('mousemove', renderMouseStalker)}
 })();
 
 // Adjust btns position on mouse move to stay on the same axis with mouse
@@ -456,12 +456,12 @@ const common = {
       this.throttledAdjust = new common.Throttle(this.adjust, [event], common.displayRefreshFrequency, this);
       this.getDimensions();
       this.addEventListeners();
-    };
+    }
     getDimensions() {
       this.btnsSideLength = common.getValueOfProperty(this.topBtn, 'width').replace('px', '');
       this.topBtnOffset = (document.documentElement.clientWidth - this.btnsSideLength) / 2;
       this.sideBtnOffset = (document.documentElement.clientHeight - this.btnsSideLength) / 2;
-    };
+    }
     setPosition(element, cursorPosition, axis) {
       this.allowedPositionRangeX = [0, document.documentElement.clientWidth - this.btnsSideLength];
       this.allowedPositionRangeY = [this.btnsSideLength * 1.2, document.documentElement.clientHeight - this.btnsSideLength];
@@ -472,32 +472,32 @@ const common = {
       } else {
         offset = this.sideBtnOffset;
         [rangeMin, rangeMax] = [this.allowedPositionRangeY[0] - offset, this.allowedPositionRangeY[1] - offset];
-      };
+      }
       let position = cursorPosition - this.btnsSideLength * 0.5 - offset;
       if (position < rangeMin) {
         position = rangeMin;
       } else if (position > rangeMax) {
         position = rangeMax;
-      };
-      element.style.setProperty('--adjusted-position', `translate${axis}(${position}px)`)
-    };
+      }
+      element.style.setProperty('--adjusted-position', `translate${axis}(${position}px)`);
+    }
     adjust(event) {
       this.setPosition(this.topBtn, event.clientX, 'X');
       this.setPosition(this.sideBtn, event.clientY, 'Y');
-    };
+    }
     addEventListeners() {
-      window.addEventListener('resize', (event) => {
+      window.addEventListener('resize', () => {
         this.getDimensions();
       });
       document.addEventListener('mousemove', (event) => {
         this.throttledAdjust.execute([event]);
       });
-    };
-  };
+    }
+  }
 
   if(!('ontouchstart' in window)) {
     new btnsAlignedWithMouse();
-  };
+  }
 })();
 
 //Show/hide modal containers
@@ -511,7 +511,7 @@ const common = {
     btn.addEventListener('click', () => {
       element.classList.toggle('modal--show');
       btn.classList.toggle('modal__toggle--toggled');
-    })
+    });
   });
 })();
 
@@ -523,15 +523,15 @@ const common = {
     constructor(nodeList) {
       this.currentUnfoldedDescription = null;
       nodeList.forEach(element => new UnfoldableDescription(element, this));
-    };
+    }
     maintainOneDescriptionUnfolded(hoveredElement) {
-      if (this.currentUnfoldedDescription !== hoveredElement && this.currentUnfoldedDescription !== null) {this.hidePreviouslyUnfoldedDescription()};
-      if (this.currentUnfoldedDescription !== hoveredElement) {this.currentUnfoldedDescription = hoveredElement};
-    };
+      if (this.currentUnfoldedDescription !== hoveredElement && this.currentUnfoldedDescription !== null) {this.hidePreviouslyUnfoldedDescription()}
+      if (this.currentUnfoldedDescription !== hoveredElement) {this.currentUnfoldedDescription = hoveredElement}
+    }
     hidePreviouslyUnfoldedDescription() {
       this.currentUnfoldedDescription.hideText(this.currentUnfoldedDescription);
-    };
-  };
+    }
+  }
 
   class UnfoldableDescription {
     constructor(element, list) {
@@ -546,7 +546,7 @@ const common = {
       this.paintingSpeed = Math.floor(this.animationSpeed / this.fullText.length);
       this.list = list;
       this.addEventListeners(this);
-    };
+    }
     showText() {
       this.list.maintainOneDescriptionUnfolded(this);
       clearTimeout(this.textIsPainting);
@@ -555,8 +555,8 @@ const common = {
           this.foldableTextContainer.textContent = this.foldableTextContainer.textContent + this.fullText[this.foldableTextContainer.textContent.length];
           this.showText();
         }, this.paintingSpeed);
-      };
-    };
+      }
+    }
     hideText() {
       clearTimeout(this.textIsPainting);
       if (this.foldableTextContainer.textContent.length !== 0) {
@@ -564,28 +564,28 @@ const common = {
           this.foldableTextContainer.textContent = this.foldableTextContainer.textContent.slice(0, -1);
           this.hideText();
         }, (this.paintingSpeed * 0.7));
-      };
-    };
+      }
+    }
     addEventListeners() {
-      this.container.addEventListener('mouseenter', (event) => {
+      this.container.addEventListener('mouseenter', () => {
         this.showText();
       });
-      this.container.addEventListener('focusin', (event) => {
+      this.container.addEventListener('focusin', () => {
         this.showText();
       });
-      this.container.addEventListener('mouseleave', (event) => {
+      this.container.addEventListener('mouseleave', () => {
         if(this.container.querySelector('a') !== document.activeElement) {
           this.hideText();
-        };
+        }
       });
-      this.container.addEventListener('focusout', (event) => {
+      this.container.addEventListener('focusout', () => {
         this.hideText();
       });
-      window.addEventListener('resize', (event) => {
-        if(window.innerWidth < 1100 && this.foldableTextContainer.textContent.length !== 0) {this.hideText()};
+      window.addEventListener('resize', () => {
+        if(window.innerWidth < 1100 && this.foldableTextContainer.textContent.length !== 0) {this.hideText()}
       });
     }
-  };
+  }
 
   new UnfoldableDescriptonsList(document.querySelectorAll('.contacts__contact'));
 
@@ -595,46 +595,46 @@ const common = {
 //---------------
 
 (() => {
-let multilanguageContainers = document.querySelectorAll('[data-lang-ru]');
-const changeLanguageCheckbox = document.querySelector('.site-preferences__checkbox--language-change');
-const title = {
-  'Ru': 'Портфолио',
-  'En': 'Portfolio'
-};
-const changeLanguage = (language) => {
-  multilanguageContainers.forEach(element => element.textContent = element.dataset[(`lang${language}`)]);
-  document.title = title[language];
-  updateCheckbox(language);
-  document.documentElement.setAttribute('lang', language.toLowerCase());
-  localStorage.setItem('language', language);
-};
-const applyLanguageToNewElements = (event) => {
-  const newMultilanguageContainers = event.target.querySelectorAll('[data-lang-ru]');
-  if (newMultilanguageContainers) {
-    newMultilanguageContainers.forEach(element => element.textContent = element.dataset[(`lang${localStorage.getItem('language')}`)]);
-    multilanguageContainers = [...multilanguageContainers, ...newMultilanguageContainers];
+  let multilanguageContainers = document.querySelectorAll('[data-lang-ru]');
+  const changeLanguageCheckbox = document.querySelector('.site-preferences__checkbox--language-change');
+  const title = {
+    'Ru': 'Портфолио',
+    'En': 'Portfolio'
+  };
+  const changeLanguage = (language) => {
+    multilanguageContainers.forEach(element => element.textContent = element.dataset[(`lang${language}`)]);
+    document.title = title[language];
+    updateCheckbox(language);
+    document.documentElement.setAttribute('lang', language.toLowerCase());
+    localStorage.setItem('language', language);
+  };
+  const applyLanguageToNewElements = (event) => {
+    const newMultilanguageContainers = event.target.querySelectorAll('[data-lang-ru]');
+    if (newMultilanguageContainers) {
+      newMultilanguageContainers.forEach(element => element.textContent = element.dataset[(`lang${localStorage.getItem('language')}`)]);
+      multilanguageContainers = [...multilanguageContainers, ...newMultilanguageContainers];
+    }
+  };
+  const updateCheckbox = (language) => {
+    (language === 'En') ? changeLanguageCheckbox.checked = true : changeLanguageCheckbox.checked = false;
+  };
+
+
+  if (localStorage.getItem('language')) {
+    changeLanguage(localStorage.getItem('language'));
+  } else if (navigator.languages.includes('ru')) {
+    changeLanguage('Ru');
+  } else {
+    changeLanguage('En');
   }
-};
-const updateCheckbox = (language) => {
-  (language === 'En') ? changeLanguageCheckbox.checked = true : changeLanguageCheckbox.checked = false;
-}
 
+  changeLanguageCheckbox.addEventListener('change', () => {
+    (changeLanguageCheckbox.checked) ? changeLanguage('En') : changeLanguage('Ru');
+  });
 
-if (localStorage.getItem('language')) {
-  changeLanguage(localStorage.getItem('language'));
-} else if (navigator.languages.includes('ru')) {
-  changeLanguage('Ru');
-} else {
-  changeLanguage('En');
-};
-
-changeLanguageCheckbox.addEventListener('change', (event) => {
-  (changeLanguageCheckbox.checked) ? changeLanguage('En') : changeLanguage('Ru');
-});
-
-document.addEventListener('elementinserted', (event) => {
-  applyLanguageToNewElements(event);
-});
+  document.addEventListener('elementinserted', (event) => {
+    applyLanguageToNewElements(event);
+  });
 })();
 
 //Safari z-index bug workaround
@@ -643,9 +643,9 @@ document.addEventListener('elementinserted', (event) => {
 (() => {
   if (navigator.userAgent.indexOf('Safari') !== -1 && navigator.userAgent.indexOf('Chrome') === -1) {
     removeTransformFromCards();
-  };
+  }
 
-  const removeTransformFromCards = (event) => {
+  const removeTransformFromCards = () => {
     document.addEventListener('elementinserted', (event) => {
       const cards = event.target.querySelectorAll('.project__card');
       if(cards) {
@@ -653,9 +653,9 @@ document.addEventListener('elementinserted', (event) => {
           card.style.transform = 'none';
           card.style.boxShadow = '0 0 10px 10px var(--border-color)';
         });
-      };
+      }
     });
-  }
+  };
 })();
 
 //Add this script as a skewed background text
@@ -695,7 +695,7 @@ document.addEventListener('elementinserted', (event) => {
       if(codeContainer.offsetHeight < portfolio.offsetHeight + remToPixels(18)) {
         codeContainer.innerHTML = `${codeContainer.innerHTML}${codeContainer.innerHTML}`;
         adjustCodeBackgroundHeight();
-      };
+      }
     };
     let script = await fetchFileAsText(relativePath);
     codeContainer.innerHTML = await processScriptThroughWorker(script);
