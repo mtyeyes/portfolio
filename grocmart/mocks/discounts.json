@@ -1,0 +1,10 @@
+{
+  "discountsByGroup": {
+    "vegetables": 0.25,
+    "bakery": 0.15
+  },
+  "discountsByProduct": {
+    "parmesan": 0.25,
+    "bread": 0.40
+  }
+}

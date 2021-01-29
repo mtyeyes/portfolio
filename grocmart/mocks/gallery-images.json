@@ -1,0 +1,32 @@
+[
+  {
+    "imageName": "pear",
+    "imageDescription": "Boxes full of pears",
+    "productId": "pears"
+  },
+  {
+    "imageName": "straw",
+    "imageDescription": "Juicy strawberries",
+    "productId": "strawberries"
+  },
+  {
+    "imageName": "peppers",
+    "imageDescription": "Sweet peppers",
+    "productId": "peppers"
+  },
+  {
+    "imageName": "orang",
+    "imageDescription": "Juicy oranges",
+    "productId": "oranges"
+  },
+  {
+    "imageName": "rasp",
+    "imageDescription": "Tasty raspberries",
+    "productId": "raspberries"
+  },
+  {
+    "imageName": "cab",
+    "imageDescription": "Field of cabbages",
+    "productId": "cabbages"
+  }
+]

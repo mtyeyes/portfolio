@@ -688,6 +688,7 @@ const common = {
       parent: wrapper,
       tagName: 'code',
       classesArr: ['code-as-background'],
+      attributeNameValuePairs: {'aria-hidden': 'true'}
     });
     const adjustCodeBackgroundHeight = () => {
       const remToPixels = (int) =>{return getComputedStyle(document.documentElement).fontSize.replace('px', '') * int};
