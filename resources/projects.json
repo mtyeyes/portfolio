@@ -5,7 +5,7 @@
     "supportedBrowsers": ["chrome", "firefox", "ie"],
     "description": "Интерактивный магазин. React, Typescript, Webpack",
     "descriptionEn": "Interactive shop. React, Typescript, Webpack",
-    "skills": ["React", "Typescript", "Webpack", "Redux"],
+    "skills": ["React", "Typescript", "Webpack", "Redux", "BEM"],
     "link": "https://mtyeyes.github.io/grocmart/"
   },
   "darkInk": {
@@ -14,7 +14,7 @@
     "supportedBrowsers": ["chrome", "firefox", "safari", "ie"],
     "description": "Адапитивный pixel-perfect, БЭМ",
     "descriptionEn": "Adaptive pixel-perfect, BEM",
-    "skills": ["JavaScript", "BEM", "Gulp", "Parcel"],
+    "skills": ["BEM", "Gulp", "Parcel"],
     "link": "https://mtyeyes.github.io/dark-ink/"
   },
   "screenPalette": {
@@ -23,7 +23,7 @@
     "supportedBrowsers": ["chrome", "firefox", "safari"],
     "description": "PWA ночник",
     "descriptionEn": "PWA nightlight",
-    "skills": ["JavaScript", "PWA", "Gulp"],
+    "skills": ["PWA", "Gulp"],
     "link": "https://mtyeyes.github.io/screen-palette/"
   },
   "sedona": {

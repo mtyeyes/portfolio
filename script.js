@@ -337,7 +337,7 @@ const common = {
     setTheme(localStorage.getItem('theme'));
   }
 
-  if (common.getValueOfProperty(document.documentElement, '--theme') === ' dark') {
+  if (common.getValueOfProperty(document.documentElement, '--theme').includes('dark')) {
     themeSwitcher.checked = true;
   }
 })();
