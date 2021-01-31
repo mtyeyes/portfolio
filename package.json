@@ -5,6 +5,7 @@
     "unminify": "gulp unminify"
   },
   "author": "Stan Konovalov",
+  "homepage": "http://mtyeyes.github.io/portfolio",
   "eslintConfig": {
     "env": {
       "browser": true,

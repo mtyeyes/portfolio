@@ -1,4 +1,13 @@
 {
+  "grocmart": {
+    "resourcesName": "grocmart",
+    "title": "Grocmart",
+    "supportedBrowsers": ["chrome", "firefox", "ie"],
+    "description": "Интерактивный магазин. React, Typescript, Webpack",
+    "descriptionEn": "Interactive shop. React, Typescript, Webpack",
+    "skills": ["React", "Typescript", "Webpack", "Redux"],
+    "link": "https://mtyeyes.github.io/grocmart/"
+  },
   "darkInk": {
     "resourcesName": "ink",
     "title": "Dark Ink",
@@ -15,16 +24,7 @@
     "description": "PWA ночник",
     "descriptionEn": "PWA nightlight",
     "skills": ["JavaScript", "PWA", "Gulp"],
-    "link": "https://mtyeyes.github.io/palette/"
-  },
-  "overlayInfuser": {
-    "resourcesName": "infuser",
-    "title": "Overlay Infuser",
-    "supportedBrowsers": ["chrome", "firefox", "safari", "ie"],
-    "description": "Скрипт для накладывания макета на верстку",
-    "descriptionEn": "Script to place overlay image on top of the document",
-    "skills": ["JavaScript"],
-    "link": "https://mtyeyes.github.io/instruments/overlay-infuser"
+    "link": "https://mtyeyes.github.io/screen-palette/"
   },
   "sedona": {
     "resourcesName": "sedona",
