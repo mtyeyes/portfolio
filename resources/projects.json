@@ -2,10 +2,10 @@
   "grocmart": {
     "resourcesName": "grocmart",
     "title": "Grocmart",
-    "supportedBrowsers": ["chrome", "firefox", "ie"],
+    "supportedBrowsers": ["chrome", "firefox"],
     "description": "Интерактивный магазин. React, Typescript, Webpack",
     "descriptionEn": "Interactive shop. React, Typescript, Webpack",
-    "skills": ["React", "Typescript", "Webpack", "Redux", "BEM"],
+    "skills": ["React", "Typescript", "Webpack", "Redux"],
     "link": "https://mtyeyes.github.io/grocmart/"
   },
   "darkInk": {
@@ -14,7 +14,7 @@
     "supportedBrowsers": ["chrome", "firefox", "safari", "ie"],
     "description": "Адапитивный pixel-perfect, БЭМ",
     "descriptionEn": "Adaptive pixel-perfect, BEM",
-    "skills": ["BEM", "Gulp", "Parcel"],
+    "skills": ["Gulp", "Parcel"],
     "link": "https://mtyeyes.github.io/dark-ink/"
   },
   "screenPalette": {
@@ -32,7 +32,7 @@
     "supportedBrowsers": ["chrome", "firefox", "safari", "ie"],
     "description": "Отзывчивый pixel-perfect, БЭМ",
     "descriptionEn": "Responsive pixel-perfect, BEM",
-    "skills": ["Gulp", "BEM"],
+    "skills": ["Gulp"],
     "link": "https://mtyeyes.github.io/sedona/"
   }
 }
