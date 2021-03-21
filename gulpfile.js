@@ -6,7 +6,8 @@ const minifyInline = require('gulp-minify-inline');
 const beautify = require('gulp-beautify');
 
 const minifyHtml = () => {
-  return gulp.src('index.html')
+  return gulp
+    .src('index.html')
     .pipe(minifyInline())
     .pipe(htmlmin({ collapseWhitespace: true }))
     .pipe(gulp.dest('./'));
@@ -15,7 +16,8 @@ const minifyHtml = () => {
 exports.minifyHtml = minifyHtml;
 
 const unminifyHtml = () => {
-  return gulp.src('index.html')
+  return gulp
+    .src('index.html')
     .pipe(beautify.html({ indent_size: 2 }))
     .pipe(gulp.dest('./'));
 };
@@ -23,37 +25,29 @@ const unminifyHtml = () => {
 exports.unminifyHtml = unminifyHtml;
 
 const minifyCss = () => {
-  return gulp.src('style.css')
+  return gulp
+    .src('style.css')
     .pipe(plumber())
     .pipe(csso())
-    .pipe(gulp.dest('./'))
+    .pipe(gulp.dest('./'));
 };
 
 exports.minifyCss = minifyCss;
 
 const unminifyCss = () => {
-  return gulp.src('style.css')
+  return gulp
+    .src('style.css')
     .pipe(plumber())
     .pipe(beautify.css({ indent_size: 2 }))
-    .pipe(gulp.dest('./'))
+    .pipe(gulp.dest('./'));
 };
 
 exports.unminifyCss = unminifyCss;
 
-const minify = gulp.series(
-  gulp.parallel(
-    minifyHtml,
-    minifyCss,
-  ),
-);
+const minify = gulp.series(gulp.parallel(minifyHtml, minifyCss));
 
 exports.minify = minify;
 
-const unminify = gulp.series(
-  gulp.parallel(
-    unminifyHtml,
-    unminifyCss,
-  ),
-);
+const unminify = gulp.series(gulp.parallel(unminifyHtml, unminifyCss));
 
 exports.unminify = unminify;

@@ -2,7 +2,8 @@
   "name": "portfolio",
   "scripts": {
     "minify": "gulp minify",
-    "unminify": "gulp unminify"
+    "unminify": "gulp unminify",
+    "format": "prettier --config .prettierrc \"**/*.+(js|json)\" --write"
   },
   "author": "Stan Konovalov",
   "homepage": "http://mtyeyes.github.io/portfolio",
@@ -49,6 +50,7 @@
     "gulp-csso": "^4.0.1",
     "gulp-htmlmin": "^5.0.1",
     "gulp-minify-inline": "^1.1.0",
-    "gulp-plumber": "^1.2.1"
+    "gulp-plumber": "^1.2.1",
+    "prettier": "^2.2.1"
   }
 }
